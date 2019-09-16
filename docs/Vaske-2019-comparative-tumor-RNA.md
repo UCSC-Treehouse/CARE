@@ -46,9 +46,7 @@ Then, to process all samples in input/, depositing the results into output/:
 The provided background compendium (v5) contains expression data that is not fully compatible with the [latest version of CARE](https://github.com/UCSC-Treehouse/CARE).
 Specifically: CARE works in a HUGO gene name space, while the [Toil RNA-Seq pipeline](https://github.com/UCSC-Treehouse/pipelines) that generates the RNA expression levels
 names the genes using Ensembl IDs. This results in a conversion step where the code combines the expression values of multiple Ensembl IDs that map to the same HUGO name.
-For this release (v5), the resulting value was the mean of the inputs; however, we have since corrected the algorithm to sum the inputs instead. Thus, using the latest 
-CARE code with this compendium may result in outliers that are not truly supported by the underlying data.
-
+For this release (v5), the resulting value was the mean of the inputs; however, we have since corrected the algorithm to sum the inputs instead. We have confirmed that the outliers reported in Vaske 2019 are not affected by this change, but we suggest using the latest CARE code for any new samples to be analyzed.
 
 In addition, when using this v5 compendium and pipeline, the results involving MSigDB drug-gene database or  Broad "compute overlaps" API may differ slightly from published due to updates to the gene sets since time of original analysis.
 In addition, when performing overlap analysis only the 2025 genes with highest expression in a gene set will be used. This is due to restrictions on the Broad overlap analysis API which were not present at time of original analysis. 
