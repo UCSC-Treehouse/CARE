@@ -1,0 +1,144 @@
+.displayNone { /* attach this class to things and they will go away without forgetting their previous display */
+    display:none !important;
+}
+.hiddenForRegistryToggle { /* Can't be rolled into displayNone or items might be toggled on when supposed to remain hidden */
+    display:none !important;
+}
+
+html, body {
+    font-size: 24pt;
+    color:#00458c;
+}
+h3, h4 {
+    margin-bottom:0px;
+}
+.ui.center.header, .ui.table, .ui.horizontal.label, .ui.table thead th {
+        color:#00458c;
+}
+
+.ui.horizontal.label {
+    background-color: #F1B521;
+    font-weight:350;
+}
+.ui.segment {
+    margin-left:0.2in;
+    margin-right:0.2in;
+}
+    
+.ui.inverted.center.header {
+    margin-top:0in;
+    color:#F1B521;
+    background-color:#00458c;
+}
+
+#all_molecular_findings sup{
+ color:rgba(0,0,0,.7);  /* matched to superscript in legend by eye */
+}
+
+#rationale ol li{
+    padding:0px;
+    padding-top:1px;
+}
+div.module h4.ui.header{
+    padding:3px;
+    margin-bottom:0px;
+}
+
+/* Horizontally-formatted page */
+.page {    
+    position:relative; /* So I can use position:absolute in the children */
+    height:7.5in;
+    width:10in;   
+    padding: 0in;
+    
+    /* pin the footer div at the bottom */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.repeatedFooter {
+    background-color:#F1B521;
+}
+.repeatedFooter .distributionWarning{
+        font-size:10pt;
+}
+.repeatedFooter .sampleInfo{
+        font-size:16pt;
+}
+.repeatedFooter * {
+    max-width:100%;
+    max-height:100%;
+}
+
+input[type='checkbox']{
+    zoom:3;
+}
+        
+
+@media print {
+    @page { 
+        size: landscape;
+        margin-top: 0.53in;
+        margin-left:0.45in;
+        margin-right:0.45in;
+        margin-bottom:0.37in;
+    }
+    .page {
+        page-break-inside: avoid;
+        height:7.5in;
+        width:10in;
+}
+    
+    
+    .page.appendices { /* Give the appendix some padding back when printed */
+        padding:0.4in !important;
+    }
+    div.module {
+        page-break-inside: avoid;
+    }
+    .noprint {
+        display:none;
+    }
+
+    /* Display the footer on every printed page */
+    tfoot.repeatedFooter {display: table-footer-group;}
+
+}
+
+/* container for a 'module'. This is a conceptual grouping.
+it typically  contains the box that would be copied over to
+a slide, as well as some small explanatory text below.*/
+
+.slidebox {
+    margin:auto;
+}
+.appendix { /* items in the appendix need to breathe */
+    margin-top:0.2in;
+}
+.chosen_molecular_category {
+    font-weight: bold;
+}
+
+#clinical_data table td{
+    vertical-align:top;
+}
+
+.clinicalrow {
+    display:flex;
+    justify-content:left;
+    padding:10px;
+    font-weight:500;
+    font-size:23pt;
+}
+.ui.horizontal.label {
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.imgcaption {
+    margin:0in !important;
+    padding:0.1in !important;
+    text-align:center;
+    line-height:130%;
+}

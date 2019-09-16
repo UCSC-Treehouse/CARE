@@ -1,0 +1,153 @@
+.displayNone { /* attach this class to things and they will go away without forgetting their previous display */
+    display:none !important;
+}
+.hiddenForRegistryToggle { /* Can't be rolled into displayNone or items might be toggled on when supposed to remain hidden */
+    display:none !important;
+}
+
+html, body {
+    font-size: 10pt;
+}
+h3, h4 {
+    margin-bottom:0px;
+}
+
+#rationale ol li{
+    padding:0px;
+    padding-top:1px;
+}
+div.module h4.ui.header{
+    padding:3px;
+    margin-bottom:0px;
+}
+div.module div.ui.segment{
+    /*margin:0px; */
+}
+
+div.footerclass{
+    padding:3px;
+    line-height:95%;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:nowrap;
+    align-items:flex-end;
+}
+
+/* remove semantic's box-shadow on bottom attached message */
+div.ui.bottom.attached.message {
+    margin-top:0px;
+    box-shadow:0 0 0 1px rgba(34,36,38,.22) inset, 0 0 0 0 transparent;
+}
+
+/* narrow margins for the page */
+.page {
+    position:relative; /* So I can use position:absolute in the children */
+    min-height:11in;
+    height:11in;
+    width:8.5in;
+    padding-left: 0.4in;
+    padding-top: 0.4in;
+    padding-right: 0.4in;
+    padding-bottom: 0.4in;
+}
+@page {
+    margin-top:0.5in;
+}
+@media print {
+    thead.appendixheader {display: table-header-group;}
+    tfoot.appendixfooter {display: table-footer-group;}
+    .page.appendices { /* Give the appendix some padding back when printed */
+       padding-left:0.4in !important;
+       padding-right:0.4in !important;
+    }
+    #front_page { /* fix margins on front page too? */
+        padding-left:0.4in !important;
+        padding-right:0.4in !important;
+    }
+    div.module {
+        page-break-inside: avoid;
+    }
+    .noprint {
+        display:none;
+    }
+}
+
+/* container for a 'module'. This is a conceptual grouping.
+it typically  contains the box that would be copied over to
+a slide, as well as some small explanatory text below.*/
+
+.slidebox {
+    margin:auto;
+}
+.appendix { /* items in the appendix need to breathe */
+    margin-top:0.2in;
+}
+.chosen_molecular_category {
+    font-weight: bold;
+}
+
+#clinical_data table td{
+    vertical-align:top;
+}
+
+#rationale .slidebox{
+    width:7.65in;
+}
+
+#all_molecular_findings td {
+    padding:3px;
+}
+
+#m_most_correlated_samples{
+    margin-top:0.05in;
+}
+
+/* front page layout */
+#front_page_content{  /* contains all front page modules */
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    height:10in;
+    width:7.7in;
+}
+
+/* Clinical data */
+.clinicalrow {
+    display:flex;
+    justify-content:left;
+    padding:3px;
+}
+.ui.horizontal.label {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#clinical_and_primarycat{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+#clinical_data{
+    margin-right:0.1in;
+    flex-grow:2;
+}
+
+#pathway_and_tumormap{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+#m_pathway_summary { 
+    margin-right:0.1in;
+}
+
+.frontpage_img { /* contains pathway or tumormap graphic on front page */
+    width:3.75in;
+    height:2.25in;
+}
+
+.toprightBox { /* the box in the upper right of front page summary */
+ min-width:145px;
+}

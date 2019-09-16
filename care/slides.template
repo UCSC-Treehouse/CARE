@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<!-- Comparative Tumor RNA-Seq Analysis -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Treehouse Analysis</title>
+
+    <!-- Semantic UI -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+    <!-- HTML Sheets of Paper -->
+    <style type="text/css">
+        {{ get_resource_as_string(
+            './treehouse/css/HTML-Sheets-of-Paper/sheets-of-paper.css') | safe }}
+    </style>
+    <style type="text/css">
+        {{ get_resource_as_string(
+            './treehouse/css/HTML-Sheets-of-Paper/sheets-of-paper-usletter.css') | safe }}
+    </style>
+
+    <script type="text/javascript">
+        // Distinguish between slides and findings for later javascript
+        documentTypeIsSlides = true;
+    </script>
+    <!-- File edited by the analyst -->
+    <script type='text/javascript' src='annotations.json'></script>
+    <!-- Script to add the analyst items to the document -->
+    <script type='text/javascript'>
+        {{ get_resource_as_string('./treehouse/js/summary.template.js') | safe }}
+    </script>
+
+    <!-- my css -->
+    <style type="text/css">
+        {{ get_resource_as_string('./treehouse/css/slides.template.css') | safe }}
+    </style>
+</head>
+<body class="document" onload="populateSections();toggleRegistryItems();">
+    
+    <table><!-- this table contains all slides. Headers and footers go here and will repeat when printed to PDF. -->
+        <tfoot class="repeatedFooter"><tr>
+            <td style="height:0.5in;display:flex;justify-content:space-around;align-items:center;">
+                <img src="https://treehousegenomics.soe.ucsc.edu/wp-content/uploads/2018/01/GILogoForTertiarySlides.png"
+                     style="height:0.4in;">
+                <img src="https://treehousegenomics.soe.ucsc.edu/wp-content/uploads/2018/01/treehouse-blue.png"
+                     style="height:0.4in;">       
+                <span class='distributionWarning' style="line-height:120%;">
+                    NOT FOR DISTRIBUTION TO PATIENTS<br/>FOR RESEARCH PURPOSES ONLY</span> 
+                <span class='sampleInfo'>{{sample_id}}</span>
+                <span class="footerDate sampleInfo" id="date_of_analysis">xx/xx/xxxx</span>
+            </td>
+        </tr></tfoot>
+    <tbody><tr><td> <!-- You may now start slides -->
+
+            
+    <div class="page" id="slideTitlePage"> <!-- Title page -->
+        <h2 class="ui center header" style="text-align:center;margin:px;margin-top:2in;">
+            Treehouse Analysis
+        </h2>
+        <h3 class="ui center header" style="text-align:center;margin:px;margin-bottom:2in;">
+            Focus Sample: <span id="partner_id">XXXXXXXXX</span> ({{sample_id }})
+        </h3>
+    </div>
+    <div class="page" id="slideClinicalData" style="justify-content:left;">
+        <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;">
+            Clinical Data
+        </h4>
+        <!-- Clinical data table: two divs -->
+            <div class="ui basic top attached table" style="display:flex;flex-direction:column;">
+                <span class="clinicalrow">
+                    <span class="ui horizontal label">Diagnosis</span><span id="diagnosis">~~~~</span>
+                </span>
+                
+                <span class="clinicalrow">
+                    <span style="flex-basis:35%;">
+                        <span class="ui horizontal label">Gender</span><span id="gender">~~</span>
+                    </span>
+                    <span style="flex-basis:65%;">
+                        <span class="ui horizontal label">Anatomical Source</span><span id="sample_submitted">~~~~</span>
+                    </span>
+                </span>
+                <span class="clinicalrow">
+                    <span style="flex-basis:35%;">
+                        <span class="ui horizontal label">Age at Diagnosis</span><span id="age">~~</span>
+                    </span>
+                    <span style="flex-basis:65%;">
+                        <span class="ui horizontal label">Sample Collected by 
+                             <span class="registryOnly">Stanford</span><span class="noRegistry">Clinicians</span>
+                        </span>
+                        <span id="date_of_sample_collection">~/~/~</span>
+                    </span>
+                </span>
+                <span class="clinicalrow">
+                    <span style="flex-basis:35%;">
+                        <span class="ui horizontal label" style="margin-right:0px;">Age at Relapse</span>
+                        <span id="age_at_relapse">~</span>
+                    </span>
+                    <span style="flex-basis:65%;">
+                        <span class="ui horizontal label">Sequence Received by Treehouse</span>
+                        <span id="sample_received">~/~/~</span>
+                    </span>
+                </span>
+            </div>
+            <div class="ui basic bottom attached table" style="padding:3px;">
+                    <span>
+                        <span class="ui horizontal label ">Relevant&nbsp;Clinical&nbsp;Notes</span>
+                        <span id="relevant_clinical_notes">~~ ~~~ ~~~</span>
+                    </span>
+            </div> <!--end clinical table two divs -->
+    </div><!-- Clinical data slide -->
+
+    <div class="page" id="slideMolecularTesting" style="justify-content:left;">
+        <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;">
+            Molecular Testing
+        </h4>
+        <div>
+        <table class="ui basic table"
+               style="margin:0.2in;font-weight:500;padding:10px;table-layout:fixed;width:95%">
+            <tr><td style="padding:0px;padding-bottom:10px;border-bottom:none;">
+                <span class="ui horizontal label">Foundation Medicine</span>
+                <span id="foundation_medicine"><!-- populated by javascript --></span>
+                </td></tr>
+        </table>
+            <table class="ui basic table" 
+                   style="margin:0.2in;font-weight:500;padding:10px;table-layout:fixed;width:95%">
+                <thead>
+                    <tr>
+                        <td style="padding:0px;padding-bottom:10px;border-bottom:none;">
+                            <span class="ui horizontal label">Additional Molecular Testing</span>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id="prior_molecular_testing">
+                    <!-- populated by javascript --> <!-- "padding:10px;font-size:20pt;border-top:none;line-height:120%;font-weight:400;" -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="page" id="slideQCReport" style="justify-content:left;">
+                <!-- Custom: Quality control slide -->
+        <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;">
+            QC report for {{nb_4pt25.Sample_id}}
+        </h4>
+        <div style="padding:5%">
+        Treehouse QC Metrics <br/>
+            Generated on {{nb_4pt25.Date}}<br/>
+            {% set reads = nb_4pt25['Read_count_table']['Total_sequences']/10**6%}
+            Total Reads: {{reads|round(1)}} million<br/>
+            <style>
+            .nomargin th,.nomargin td { padding:2px !important}
+            </style>
+            <table class="ui very compact table">
+                <thead>
+                    <tr class="header">
+                        <th align="left">Measure</th>
+                        <th align="center">Result</th>
+                        <th align="center">Reference Range</th>
+                        <th align="center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set passing = False %}
+                    {% set rowColoringFailOrNot = "#ffe8e6" %}
+                    {% set textColorFailOrNot = "#db2828" %}
+                    {% if nb_4pt25['RIN']["In_reference_range?"]=="Yes"%}
+                        {% set passing = True %}
+                        {% set rowColoringFailOrNot = "" %}
+                        {% set textColorFailOrNot = "" %}
+                    {% endif %}
+                    <tr class="odd" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
+                            <td align="left">RIN</td>
+                            <td align="center">{{nb_4pt25['RIN']['Result']}}</td>
+                            <td align="center">{{nb_4pt25['RIN']['Reference_range']}}</td>
+                            <td align="center">
+                                {% if passing %}
+                                    PASS
+                                {% else %}
+                                    FAIL
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% set passing = False %}
+                    {% set rowColoringFailOrNot = "#ffe8e6" %}
+                    {% set textColorFailOrNot = "#db2828" %}
+                    {% if "This sample exceeds the minimum required threshold of" in nb_4pt25['Threshold_Statement'] %}
+                        {% set passing = True %}
+                        {% set textColorFailOrNot = "" %}
+                        {% set rowColoringFailOrNot = "" %}
+                    {% endif %}
+                    <tr class="even" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
+                            <td align="left">MEND (M)</td>
+                            <td align="center">
+                                {% set mil_umend = nb_4pt25['Read_count_table']['UMEND']/10**6 %}
+                                {{mil_umend|round(2)}}
+                            </td>
+                            <td align="center">&gt; 10</td>
+                            <td align="center">
+                                {% if passing %}
+                                    PASS
+                                {% else %}
+                                    FAIL
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% set passing = False %}
+                    {% set rowColoringFailOrNot = "#ffe8e6" %}
+                    {% set textColorFailOrNot = "#db2828" %}
+                    {% if nb_4pt25['UMEND_reads/Total_reads']['In_reference_range?'] == "Yes" %}
+                        {% set passing = True %}
+                        {% set textColorFailOrNot = "" %}
+                        {% set rowColoringFailOrNot = "" %}
+                    {% endif %}
+                    <tr class="odd" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
+                            <td align="left">% MEND</td>
+                            <td align="center">{{nb_4pt25['UMEND_reads/Total_reads']['Result']*100}}</td>
+                            <td align="center">
+                                {% set ref = nb_4pt25['UMEND_reads/Total_reads']['Reference_range'].split(" - ")%}
+                                {{ ref[0]|float * 100 }} - {{ ref[1]|float * 100 }}
+                            </td>
+                            <td align="center">
+                                {% if passing %}
+                                    PASS
+                                {% else %}
+                                    FAIL
+                                {% endif %}
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    <!-- End Custom: Quality control slide -->
+    </div>
+    <div class="page" id="slideMostCorrelatedSamples">
+        <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;" id="tumormap_title">
+            Most Correlated Samples
+        </h4>
+        <div id="tumormap_image" class="ui center" style="margin:0 auto;">
+            <img src="tumormap.png" style="width:9.9in;height:5.5in;" id="tumormap_img">
+            <div id="tumormap_caption" class="ui center very basic segment imgcaption">
+                    XXX Example text describing most correlated samples<br/>
+                    XXX Second line of example text
+            </div>
+        </div>
+    </div>       
+    <div class="page" id="slideMostCorrelatedSamplesTable" style="justify-content:left;">
+        <h4 class="ui center aligned inverted header" style="margin:0in;">
+            Most Correlated Samples
+        </h4>
+        {% if nb_2pt0.tumormap_results_above_threshold %} {# only show table if we have at least 1 above threshold #}
+            <table class="ui very compact small celled table" style="margin:0%;font-size:16pt;line-height:120%;">
+                <tr style="font-size:24pt;">
+                    <td><b>Sample</b></td>
+                    <td><b>Diagnosis</b></td>
+                    <td><b>Score</b></td>
+                    <td><b>Mutations in Cancer Genes</b></td>
+                </tr>
+                {% for (mcs_id, tumormap_correlation) in nb_2pt0.tumormap_results|dictsort(
+                    false, 'value') | reverse %}
+                    {# Skip results not in the mutation table, eg focus sample, or below threshold #}
+                    {% if mcs_id in nb_2pt6.mss_clin_and_mutations["Disease Type"] %}
+                        {% if mcs_id in nb_2pt0.tumormap_results_above_threshold %}
+                        <tr>
+                            <td style="padding:1.5%;"><!-- sample ID, disease, age -->
+                                <b><span style="white-space: nowrap;font-size:20pt;">{{mcs_id}}</span></b><br/>
+                                {%- if nb_2pt6.mss_clin_and_mutations ["Age at Dx (Years)"][mcs_id] -%}
+                                   age {{ 
+                                nb_2pt6.mss_clin_and_mutations ["Age at Dx (Years)"][mcs_id] | float | round(1)
+                                }}
+                                {%- else -%}
+                                    (age unknown)
+                                {%- endif -%}
+                            </td>
+                            <td style="padding:1.5%;"><!-- Diagnosis -->
+                                <span id="diagnosis_{{mcs_id}}" style="font-size:22pt;">
+                                {{- nb_2pt6.mss_clin_and_mutations ["Disease Type"][mcs_id]-}}
+                                </span>
+                            </td>
+                            <td style="padding:4px;">
+                                <span style="font-size:20pt;">
+                                    {{-'{:.2f}'.format( tumormap_correlation) -}}</span>
+                            </td>
+                            <td style="padding:1.5%;">
+                                <span id="mutations_{{mcs_id}}">
+                                    {% if nb_2pt6.mss_clin_and_mutations[
+                                        "Mutations in Cancer Genes"][mcs_id] %}
+                                        {{ nb_2pt6.mss_clin_and_mutations
+                                            ["Mutations in Cancer Genes"][mcs_id]}}
+                                    {% else %}
+                                        no information available
+                                    {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="ui segment">
+                There were no Most Correlated Samples with a correlation meeting the required 95th Percentile Correlation Threshold.
+            </div>
+        {% endif %}
+    </div><!-- end slide: most correlated samples table -->
+    <!-- Slide: lead molecular finding aka primary categorization -->    
+    <div class="page registryOnly" id="slideLeadMolecularFinding" style="justify-content:left;"> 
+
+                <h4 class="ui top inverted center aligned header" >
+                    Treehouse Primary Categorization
+                </h4> 
+                <div id="molecular_category" class="ui segment">
+                    <span id="RTK"><input type="checkbox"/> RTK: VEGFR/PDGFR/FGFR</span><br/>
+                    <span id="Cell_Cycle"><input type="checkbox"/> Cell Cycle</span>
+                    <br/>
+                    <span id="JAK_STAT"><input type="checkbox"/> JAK/STAT</span>
+                    <br/>
+                    <span id="PI3K_AKT_mTOR"><input type="checkbox"/> PI3K/AKT/mTOR</span><br/>
+                    <span id="other"><input type="checkbox"/> Other:</span>
+                </div>
+            
+    </div>
+
+    <div class="page" id="slideAllMolecularFindings"> <!-- all molecular finding -->   
+        <!-- ALL MOLECULAR FINDINGS -->
+        <div class="module" id="rationale" style="max-width:100%; max-height:100%">
+            <h4 class="ui center aligned inverted header">
+                Comparative Tumor RNA-Seq Analysis Findings
+            </h4>
+            <table class="ui top attached celled compact table">
+                <thead>
+                    <tr>
+                        <th>Molecular&nbsp;Abnormality</th>
+                        <th>Molecular Category</th>
+                        <th>Associated Drugs</th>
+                    </tr>
+                </thead>
+                <tbody id="all_molecular_findings"> 
+                    <!-- This table is populated by analyst text -->
+                </tbody>
+            </table>
+            <div style="column-count:2;padding:5px;font-size:60%" class="ui bottom attached tiny segment" id="findingsLegend">
+                <ol class="ui list" >
+                    <li value="a)"><span style="margin-left:-.15in;">
+                        outlier compared to all tumors (pan-cancer)</span></li>
+                    <li value="b)"><span style="margin-left:-.15in;">
+                        outlier compared to similar tumors (pan&#8209;disease)</span></li>
+                    <li value="c)"><span style="margin-left:-.15in;">
+                        pathway enrichment in pan-cancer outlier list</span></li>
+                    <li value="d)"><span style="margin-left:-.15in;">
+                        pathway enrichment in pan-disease outlier list</span></li>
+                    <li value="e)"><span style="margin-left:-.15in;">
+                        pathway enrichment in overlap outlier list</span></li>
+                    <li value="f)"><span style="margin-left:-.15in;">
+                        pathway enrichment in top 5% expressed genes</span></li>
+                    <li value="g)"><span style="margin-left:-.15in;">
+                        tumor similarity analysis</span></li>
+                    <li value="h)"><span style="margin-left:-.15in;">
+                        literature evidence</span></li>
+                    <li value="i)"><span style="margin-left:-.15in;">
+                        other molecular support (mutation, fusion, amplification, immunohistochemistry)</span></li>
+                </ol>
+            </div>
+        </div><!-- end ALL MOLECULAR FINDINGS -->
+    </div>
+    <div class="page" id="slidePathwaySummary"> <!-- pathway summary -->
+        <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;" id="pathway_title">
+            Pathway Summary
+        </h4>
+        <div id="pathway_summary_image" class="ui center" style="margin:0 auto;">
+            <img src="pathway.png" style="width:9.9in;height:5.5in;" id="pathway_img">
+            <div id="pathway_caption" class="ui center very basic segment imgcaption"> 
+                XXX Example pathway summary description here<br/>
+                XXX Second line of example description
+            </div>
+        </div>
+    </div><!-- slidePathwaySummary -->
+        
+    <div id="all_findings_individual_slides">
+        <!-- one slide per finding here, populated by the javascript -->
+    </div>
+
+    <div id="analyst_custom_images"><!-- Holds the 'analyst custom images' slides -->
+        <!-- one slide per custom images here, added by javascript -->
+    </div>
+
+    <!-- additional support - title page -->
+    <div class="page" id="additional_support_title_slide"
+         style="display:flex;flex-align:center">
+        <h2 class="ui center header" style="text-align:center;margin:px;margin-top:2in;">
+            Additional Support
+        </h2>
+    </div>
+    <!-- Up outliers vs PC cohort - histograms -->
+    {% for gene in nb_4pt5.gene_plots %}
+        <div class="page" id="slideOutlierHistogram_{{gene}}">
+            <h4 class="ui center aligned inverted header" style="margin:0px;">
+                   {{gene}}
+            </h4>
+            
+            {% set make_pd_short="" %}
+            {% set make_pc_short="" %}
+                        
+            {% if 'pandisease_img_data' in nb_4pt5.gene_plots[gene] %}
+                {% set make_pc_short = "height:3.5in;" %}
+            {% endif %}
+
+            {% if 'pancancer_img_data' in nb_4pt5.gene_plots[gene] %}
+                {% set make_pd_short = "height:3.5in;" %}
+                    <img style="display:block;margin-left:auto;margin-right:auto;width:70%;{{make_pc_short}}"
+                         src="data:img/png;base64, {{
+                    nb_4pt5.gene_plots[gene].pancancer_img_data}}">
+            {% endif %}
+            {% if 'pandisease_img_data' in nb_4pt5.gene_plots[gene] %}
+                <img style="display:block;margin-left:auto;margin-right:auto;width:70%;{{make_pd_short}}"
+                     src="data:img/png;base64, {{
+                                    nb_4pt5.gene_plots[gene].pandisease_img_data}}">
+                        {% endif %}
+        </div>
+    {% endfor %}
+    <!-- End up outlier histograms -->
+
+    <div class="page" id="slidePersonalizedCohortCounts">
+        <h4 class="ui center aligned inverted header" style="margin:0in;">
+            Composition of Personalized Cohorts
+        </h4>
+        <!-- Get the total count of diseases to be displayed so that we can tweak the font size -->
+        {% set how_many_diseases = (nb_2pt2.personalized_cohort_counts["first_degree_mcs_cohort"]["diseases"]|length) +
+            (nb_2pt2.personalized_cohort_counts["first_and_second_degree_mcs_cohort"]["diseases"]|length) +
+            (nb_2pt2.personalized_cohort_counts["diagnosed_disease_cohort"]|length) +
+            (nb_2pt2.personalized_cohort_counts["pandisease_samples"]["diseases"]|length) %}
+        {% if how_many_diseases <= 11 %}{% set size_for_diseases = 24 %}{#>#}
+        {% elif how_many_diseases <= 25 %}{% set size_for_diseases = 20 %}{#>#}
+        {% elif how_many_diseases <= 30 %}{% set size_for_diseases = 16 %}{#>#}
+        {% elif how_many_diseases <= 50 %}{% set size_for_diseases = 12 %}{#>#}
+        {% else %}{% set size_for_diseases = 8 %}
+        {% endif %}
+        <!-- Cohorts and cohort names -->
+        {%- if conf.info.rollup -%}
+            {% set  focusdisease_cohort_name = "Focus Sample Similar Diagnoses" %}
+        {%- else -%}
+            {% set  focusdisease_cohort_name = "Focus Sample Diagnosed&nbsp;Disease" %}
+        {%- endif %}
+
+        {% set which_cohorts = [["first_degree_mcs_cohort", "First-Degree MCS", "first_degree_thresholds"],
+                                ["first_and_second_degree_mcs_cohort", 
+                                    "First and Second-Degree MCS", 
+                                    "first_and_second_degree_thresholds"],
+                                ["diagnosed_disease_cohort", focusdisease_cohort_name, "pandis_thresholds"],
+                                ["pandisease_samples",
+                                    "Diseases of Top Six MCS above&nbsp;Threshold",
+                                    "nof1_disease_thresholds"]] %}
+        <table class="ui very compact small table" id="tablePersonalizedCohortCounts"
+               style="line-height:120%;margin:0in;font-size:{{size_for_diseases}}pt;">
+            {%- for (cohort_id, cohort_name, cohort_thresholds) in which_cohorts -%}
+            <tr>
+                <td>
+                    <span class="ui horizontal label">{{cohort_name | safe}}</span>
+                    <b>Total &mdash; {{- nb_2pt2.personalized_cohort_counts[cohort_id]["total"] -}}
+                    {% if (nb_3[cohort_thresholds].keys() | length) < 1 %}
+                        (Below minimum size; does not contribute to outlier analysis.) </b><br/>
+                         <div style="display:flex;justify-content:left;opacity:0.7">
+                    {% else %}
+                        </b><br/>
+                         <div style="display:flex;justify-content:left;">
+                    {% endif %}
+
+                                        
+                    {% set total_diseases = nb_2pt2.personalized_cohort_counts[cohort_id]["diseases"].keys() | length %}
+                    {% set columncount = 2 %}
+                    {% set dis_per_column = (total_diseases / columncount) |round(0,"ceil")| int %}
+                    {% set diseasecount=[] %} <!-- Have to use array+length to increment counts within a loop. Ugh. -->
+                    
+                    {%- if dis_per_column > 0 -%}
+                    {%- for (disease, count) in nb_2pt2.personalized_cohort_counts[cohort_id]["diseases"]|
+                            dictsort(false, 'value') | reverse -%}
+                        {# Hit a new column - create its div #}
+                        {%- if (diseasecount | length ) % dis_per_column == 0 -%}<div style="padding-left:10%;">{%- endif -%}
+                        {%- if diseasecount.append(0) -%}{%- endif -%} {# increment, ugh #}
+                            {{disease}}&nbsp;&mdash;&nbsp;{{count}}<br/>
+                        {%- if (diseasecount | length ) % dis_per_column == 0 -%} {# Finished a column #}
+                            </div>
+                        {%- endif -%}
+                    {%- endfor -%}
+                    {# When done, close the last column if we didn't have an exact close above. <div> #}
+                    {%- if (diseasecount | length ) % dis_per_column != 0 -%}</div>{%- endif -%}
+                    {%- else -%} No diseases were represented in the {{cohort_name|safe}} cohort. {%- endif -%}
+                    
+                    </div>
+                </td>
+            </tr>
+            {%- endfor -%}
+        </table>
+        </div><!-- end personalized cohort counts -->
+    <div class="page">
+        <h2 class="ui center header" style="text-align:center;margin:px;margin-top:2in;">
+            This slide intentionally left blank.
+            <!-- This pins the footer on the previous slide to the bottom. Do not print this slide. -->
+        </h2>
+    </div>
+  
+    <!-- This is the appendix, so don't put new slides here; put before personalized cohort counts slide.-->
+    <!-- Placeholder ids -->
+    <div style="display:none;">
+        <span id="hideable_items"></span>
+        <span id="case_documentation"></span>
+        <span id="outlier_analysis_findings"></span>
+        <span id="analyst_custom_appendix"></span>
+        <span id="primary_categorization_notes"></span>
+        <span id="generic_or_registry"></span>
+    </div>
+        </td></tr></tbody></table>
+</body>
+</html>

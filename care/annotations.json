@@ -1,0 +1,234 @@
+let annotations = {
+    "case_documentation": {
+        "help": "Internal notes on the analysis of this sample. Please be detailed.",
+        "value": "This is an example of internal notes. They will not be on the final pdf. " +
+                "Real internal notes should be much more detailed than this."
+    },
+    "generic_or_registry": {
+        "help": "Is this a Stanford Registry case, or a case with a different clinic?" +
+                " Write 'generic' or 'registry' to show or hide specific references to Stanford.",
+        "value":"registry"
+    },
+    "partner_id": {
+        "help": "Partner ID (eg stanford's ID for this patient)",
+        "value": "XXX XX"
+    },
+    "age": {
+        "help": "Age at diagnosis. In years",
+        "value": "XX"
+    },
+    "age_at_relapse": {
+        "help": "Age at Relapse / Current. How old is the patient now? in years.",
+        "value": "XX"
+    },
+    "gender": {
+        "value": "X"
+    },
+    "diagnosis": {
+        "value": "XXXXXXXXX"
+    },
+    "sample_submitted": {
+        "value": "XXXX XXX"
+    },
+    "relevant_clinical_notes": {
+        "value": "XXX X XXX"
+    },
+    "date_of_sample_collection": {
+        "value": "XX/XX/2018"
+    },
+    "date_of_analysis": {
+        "help": "The date this sample is analyzed by an analyst, such as today's date.",
+        "value": "XX/XX/2018"
+    },
+    "sample_received": {
+        "help": "When did treehouse receive the sample",
+        "value": "XX/XX/2018"
+    },
+    "foundation_medicine":{
+        "help": "Describe the foundation medicine results here in a complete sentence, with the date at the end.",
+        "value": "XXX Example results go here. [MM/DD/YYYY]"
+    },
+    "prior_molecular_testing": {
+        "doCustomParse":true,
+        "help": "For each source of molecular testing, add an item to the value list," +
+                "in the format '[SOURCE] Molecular testing results. [MM/DD/YYYY]'" +
+                "Describe the testing results in complete sentences with capitalization and periods.",
+        "value": [
+            "[Treehouse] Example molecular testing results XXX. [MM/DD/YYYY]",
+            "[Example] Another molecular testing example XXX. [MM/DD/YYYY]"
+        ]
+    },
+    "interpretation_analytical_summary": {
+        "help":"The introductory paragraphy of the interpretation summary that summarizes the findings" +
+                "and the strength of each. Use FormatInterpretationSummary in reference-file-info for easy HTML markup.",
+        "value":" XXX interpretation analytical summary XXX"
+    },
+    "interpretation_clinical_summaries": {
+        "help":"The Interpretation summaries for each finding. Start each with Clinical Summary: FINDINGNAME" +
+                "Use FormatInterpretationSummary in reference-file-info for easy HTML markup." +
+                "Use 'findings.png' to add the findings heatmap.",
+
+        "value":"XXX interpretation clinical summaries XXX"
+    },
+
+    "hideable_items": {
+        "doCustomParse":true,
+        "help": "Remove the # from any item you want to have hidden from the report;" +
+                "you may also add new items by ID. If this sample is ribo-minus, " +
+                "add a # to show the Library Construction note.",
+        "analysis_failed_help": "By removing the # from analysis_failed, you acknowledge that you " +
+                "have taken the appropriate action to handle this failed sample",
+        "value": [
+            "#### Analysis Failed: Remove the # to hide the alert ####",
+            "#analysis_failed",
+
+            "#### 'Other Samples' sticky: Remove the # to hide this sticky. ####",
+            "#other_samples_alert",
+
+            "#### Is this sample Ribo-Minus? If so, add # to show the note  ###",
+            "app_library_construction_note",
+
+            "#### Is this a Non-Registry Sample (eg UCSF?) if so, remove the # to hide this slide ####",
+            "#slideLeadMolecularFinding",
+
+
+            "#TumorMap_URLs",
+            "#Additional_TumorMap_Graphics",
+            "#tumormap_large",
+            "tumormap_extra_1",
+            "tumormap_extra_2",
+            "tumormap_extra_3",
+            "#### You must hide both notes containers or neither. Sorry. I agree it's not ideal. ####",
+            "#primary_categorization_notes_container",
+            "#primary_categorization_notes_container2",
+            "#### In addition you may hide any of the slides ####",
+            "#slideTitlePage",
+            "#slideClinicalData",
+            "#slideLeadMolecularFinding",
+            "#slideMostCorrelatedSamples",
+            "#slideAllMolecularFindings",
+            "#slidePathwaySummary",
+            "#slideTumormapGraphic",
+            "#slideMostCorrelatedSamplesTable",
+            "#slidePersonalizedCohortCounts",
+            "#### To hide outlier histogram slides, use slideOutlierHistogram_GENENAME",
+            "#slideOutlierHistogram_CDK6"
+        ]
+    },
+    "molecular_category": {
+        "doCustomParse":true,
+        "help": "Set the chosen category to true.if 'other', also fill out value_of_other",
+        "value": {
+            "RTK": false,
+            "Cell_Cycle": false,
+            "JAK_STAT": false,
+            "PI3K_AKT_mTOR": false,
+            "other": false
+        },
+        "value_of_other": "other: example other here."
+    },
+    "all_molecular_findings": {
+        "doCustomParse":true,
+        "help": "Sections are: Abnormality, Category, Therapy, Supports, Analyst Summary, references." +
+                "Fill out for each row. For references, key is the number in the reference list, " +
+                "and value is the txt of the reference. OK to leave it empty but must at least be " +
+                "present. If this finding should not appear on its own slide, but only in the main " +
+                "table, set 'hide' to 'yes'. ",
+        "value": [
+            {
+                "abnormality": "XXX",
+                "category": "XXX",
+                "therapy": "XXXXXXXXXXX",
+                "supports": "X",
+                "hide": "no",
+                "analyst_summary": "XXX XXXX X XXXX XXX X XX XXX XX XXXXXXX X X XXXX",
+                "references": {}
+            },
+            {
+                "abnormality": "XXX",
+                "category": "XXXXXXX",
+                "therapy": "XXXXXXXXXX",
+                "supports": "X,X",
+                "hide": "no",
+                "analyst_summary": "XXX XX XX XXXX XXXX X X XXXXX XX XXX X X XXXX",
+                "references": {}
+            },
+            {
+                "abnormality": "XXX",
+                "category": "XXXXXX",
+                "therapy": "",
+                "supports": "X,X,X",
+                "hide": "no",
+                "analyst_summary": "XXX XXX XX XXX X XXX X X XX XXXXXXX XX X XXXXX XXXXX XX XX XXXXX XXX XXXX",
+                "references": {}
+            }
+        ]
+    },
+    "tumormap_caption": {
+        "help": "describe the TumorMap image on the front page in one sentence." +
+		"Save this image as tumormap.png and it will appear.",
+        "value": "XXX Example Caption for Tumormap XXX"
+    },
+    "pathway_caption": {
+        "help": "Pathway Summary: Place your image in pathway.png . " +
+                "Then describe it here in a sentence or two.",
+        "value": "XXX Example Caption for Pathway XXX"
+    },
+    "analyst_custom_appendix": {
+        "help": "You may put any additional text in the summary appendix that you wish to. " +
+                "Surround titles with, eg, <h3>Title Goes Here</h3>",
+        "value": ""
+    },
+    "analyst_custom_images":{
+        "doCustomParse":true,
+        "help":"For adding to the slides a custom image, such as a histogram, with caption. Make a list item " +
+                "for each, filling in the image filename, title, and caption contents. If you would like this image" +
+                "to go on the front page of the summary, or main slides location, set location='tumormap' or 'pathway'" +
+                " to replace that front page item and slide. See 'example_value' for example; to make it appear in the" +
+                " actual document, populate 'value' instead.",
+        "value":[],
+        "example_value": [
+                    {   "img":"example.png", "title":"Custom Title", 
+                        "caption":"Caption for example custom image goes here. XXX", "location":""}
+                ]
+    },
+    "mcs_mutations_table": {
+        "doCustomParse":true,
+        "help": "For each sample in the mutations table whose MUTATION you wish to alter from " +
+                "what is automatically displayed, add a dictionary entry: " +
+                " 'mutations_SAMPLEID' : 'desired mutation list'. This will completely override " +
+                "the automatically displayed mutations.",
+        "value": {}
+    },
+    "mcs_mutations_table_diagnosis": {
+        "doCustomParse":true,
+        "help": "For each sample in the mutations table whose diagnosis you wish to alter from " +
+                "what is automatically displayed, add a key-value pair to the {} in the 'value' field below : " +
+                " 'diagnosis_SAMPLEID' : 'desired diagnosis'. Replace SAMPLEID with the sampleid. For example: " +
+		" 'diagnosis_TH01_0123_S01' : 'canceroma', 'diagnosis_TH01_0246_S01' : 'other disease' " +
+		"This will override the automatically displayed diagnosis.",
+        "value": {}
+    },
+    "curated_cohort_note": {
+        "help": "If you have replaced the Disease of Focus Sample cohort with a curated roll-up cohort with individually specified samples," +
+                "add a note describing why the roll-up cohort was used. This will appear in the Summary Appendix.",
+        "value": "",
+        "example_value": "An automatic 'Focus Sample Diagnosed Disease' cohort could not be generated because fewer than 20 samples in the " +
+                         "compendium share the diagnosis. This custom cohort was defined by an analyst" +
+                         "OR" +
+                         "This custom cohort was defined by analyst because the subset of samples with EXAMPLE mutation are most relevant for comparison."
+    },
+    "custom_font_size_personalized_cohorts_slide" : {
+        "doCustomParse":true,
+        "help": "If the 'composition of personalized cohorts' slide in Additional Support overflows, make the font " +
+                "smaller by setting the font size here: ",
+        "value": "",
+        "example_value":"24pt"
+    },
+    "quality_control_statement" : {
+        "doCustomParse":true,
+        "help": "If the sample did not pass QC metrics, explain why. Appears on summary second page.",
+        "value": "",
+        "example_value": "This sample failed our QC metrics: the count of expressed genes is extremely low."
+    }
+};
