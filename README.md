@@ -1,7 +1,7 @@
 # Treehouse Comparative Analysis of RNA Expression
 [UCSC Treehouse Childhood Cancer Initiative](http://treehousegenomics.ucsc.edu)
 
-## Documentation on the docker used in the [Vaske 2019 comparative tumor RNA-Seq analysis publication](https://treehousegenomics.ucsc.edu/p/vaske-2019-comparative-tumor-RNA/) is available [here](docs/Vaske-2019-comparative-tumor-RNA.md).
+## Documentation on the docker used in the [Vaske et al. 2019 Comparative Tumor RNA Sequencing Analysis publication](https://treehousegenomics.ucsc.edu/p/vaske-2019-comparative-tumor-RNA/) is available [here](docs/Vaske-2019-comparative-tumor-RNA.md).
 
 Treehouse Comparative Analysis of RNA Expression (CARE) is a dockerized chain of Jupyter notebook that performs outlier analysis on an 
 [uniformly generated](https://github.com/UCSC-Treehouse/pipelines) RNA-Seq expression file vs a background compendium of samples.
