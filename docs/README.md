@@ -1,5 +1,7 @@
-# Treehouse Comparative Analysis of RNA Expression (CARE)
-[UCSC Treehouse Childhood Cancer Initiative](http://treehousegenomics.ucsc.edu)
+<table><tr><td><img src="/docs/CARE-asklepion-v2.png"></td>
+ <td><h1> Treehouse Comparative Analysis of RNA Expression (CARE)</h1><br>
+ <a href="http://treehousegenomics.ucsc.edu">UCSC Treehouse Childhood Cancer Initiative</a>
+</td></tr></table>
 
 Documentation is in progress; the interface of this program is in active development. 
 

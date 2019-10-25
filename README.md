@@ -1,5 +1,7 @@
-# Treehouse Comparative Analysis of RNA Expression (CARE)
-[UCSC Treehouse Childhood Cancer Initiative](http://treehousegenomics.ucsc.edu)
+<table><tr><td><img src="/docs/CARE-asklepion-v2.png"></td>
+ <td><h1> Treehouse Comparative Analysis of RNA Expression (CARE)</h1><br>
+ <a href="http://treehousegenomics.ucsc.edu">UCSC Treehouse Childhood Cancer Initiative</a>
+</td></tr></table>
 
 ## Documentation on the docker used in the [Vaske 2019 comparative tumor RNA-Seq analysis publication](https://treehousegenomics.ucsc.edu/p/vaske-2019-comparative-tumor-RNA/) is available [here](docs/Vaske-2019-comparative-tumor-RNA.md).
 
