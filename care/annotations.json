@@ -5,13 +5,14 @@ let annotations = {
                 "Real internal notes should be much more detailed than this."
     },
     "generic_or_registry": {
-        "help": "Is this a Stanford Registry case, or a case with a different clinic?" +
-                " Write 'generic' or 'registry' to show or hide specific references to Stanford.",
-        "value":"registry"
+        "help": "Is this a Registry case, or a case with a different clinic?" +
+                " Write 'generic' or 'registry' to show or hide specific references to the Registry." +
+                "If you don't know which it is, leave it as 'generic'.",
+        "value":"generic"
     },
     "partner_id": {
         "help": "Partner ID (eg stanford's ID for this patient)",
-        "value": "XXX XX"
+        "value": "XX XX"
     },
     "age": {
         "help": "Age at diagnosis. In years",
@@ -28,25 +29,25 @@ let annotations = {
         "value": "XXXXXXXXX"
     },
     "sample_submitted": {
-        "value": "XXXX XXX"
+        "value": "XXXX XX"
     },
     "relevant_clinical_notes": {
-        "value": "XXX X XXX"
+        "value": "XX XX XX"
     },
     "date_of_sample_collection": {
-        "value": "XX/XX/2018"
+        "value": "XX/XX/2019"
     },
     "date_of_analysis": {
         "help": "The date this sample is analyzed by an analyst, such as today's date.",
-        "value": "XX/XX/2018"
+        "value": "XX/XX/2019"
     },
     "sample_received": {
-        "help": "When did treehouse receive the sample",
-        "value": "XX/XX/2018"
+        "help": "When did we receive the sample",
+        "value": "XX/XX/2019"
     },
     "foundation_medicine":{
         "help": "Describe the foundation medicine results here in a complete sentence, with the date at the end.",
-        "value": "XXX Example results go here. [MM/DD/YYYY]"
+        "value": "XX Example results go here. [MM/DD/YYYY]"
     },
     "prior_molecular_testing": {
         "doCustomParse":true,
@@ -54,21 +55,20 @@ let annotations = {
                 "in the format '[SOURCE] Molecular testing results. [MM/DD/YYYY]'" +
                 "Describe the testing results in complete sentences with capitalization and periods.",
         "value": [
-            "[Treehouse] Example molecular testing results XXX. [MM/DD/YYYY]",
-            "[Example] Another molecular testing example XXX. [MM/DD/YYYY]"
+            "[Treehouse] Example molecular testing results XX. [MM/DD/YYYY]",
+            "[Example] Another molecular testing example XX. [MM/DD/YYYY]"
         ]
     },
     "interpretation_analytical_summary": {
-        "help":"The introductory paragraphy of the interpretation summary that summarizes the findings" +
-                "and the strength of each. Use FormatInterpretationSummary in reference-file-info for easy HTML markup.",
-        "value":" XXX interpretation analytical summary XXX"
+        "help":"(registry only) The introductory paragraphy of the interpretation summary that summarizes the findings" +
+                "and the strength of each. You may use HTML markup.",
+        "value":" XX interpretation analytical summary XX"
     },
     "interpretation_clinical_summaries": {
-        "help":"The Interpretation summaries for each finding. Start each with Clinical Summary: FINDINGNAME" +
-                "Use FormatInterpretationSummary in reference-file-info for easy HTML markup." +
+        "help":"(registry only) The Interpretation summaries for each finding. Start each with Clinical Summary: FINDINGNAME" +
                 "Use 'findings.png' to add the findings heatmap.",
 
-        "value":"XXX interpretation clinical summaries XXX"
+        "value":"XX interpretation clinical summaries XX"
     },
 
     "hideable_items": {
@@ -98,9 +98,6 @@ let annotations = {
             "tumormap_extra_1",
             "tumormap_extra_2",
             "tumormap_extra_3",
-            "#### You must hide both notes containers or neither. Sorry. I agree it's not ideal. ####",
-            "#primary_categorization_notes_container",
-            "#primary_categorization_notes_container2",
             "#### In addition you may hide any of the slides ####",
             "#slideTitlePage",
             "#slideClinicalData",
@@ -167,12 +164,12 @@ let annotations = {
     "tumormap_caption": {
         "help": "describe the TumorMap image on the front page in one sentence." +
 		"Save this image as tumormap.png and it will appear.",
-        "value": "XXX Example Caption for Tumormap XXX"
+        "value": "XX Example Caption for Tumormap XX"
     },
     "pathway_caption": {
         "help": "Pathway Summary: Place your image in pathway.png . " +
                 "Then describe it here in a sentence or two.",
-        "value": "XXX Example Caption for Pathway XXX"
+        "value": "XX Example Caption for Pathway XX"
     },
     "analyst_custom_appendix": {
         "help": "You may put any additional text in the summary appendix that you wish to. " +
@@ -189,7 +186,7 @@ let annotations = {
         "value":[],
         "example_value": [
                     {   "img":"example.png", "title":"Custom Title", 
-                        "caption":"Caption for example custom image goes here. XXX", "location":""}
+                        "caption":"Caption for example custom image goes here. XX", "location":""}
                 ]
     },
     "mcs_mutations_table": {

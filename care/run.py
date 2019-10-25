@@ -155,7 +155,7 @@ def create_qc_json_file(input_dir, output_dir):
             print("  No secondary MEND QC file found; skipping this sample.")
     return found
       
-def main():
+def main(raw_args=None):
     
     parser = argparse.ArgumentParser(description=main.__doc__)
     parser.add_argument("-c", "--clean", action='store_true', default=False,
@@ -171,9 +171,9 @@ def main():
     dirs_to_link = ["inputs", "outputs", "references", "cohort", "rollup"]
     for linkdir in dirs_to_link:
         parser.add_argument("--{}".format(linkdir), help="Path to {} directory, as mounted".format(linkdir))
-    args = parser.parse_args()
+    args = parser.parse_args(raw_args)
 
-    print( "Running tertiary with arguments: {}".format(args)) 
+    print( "Running with arguments: {}".format(args), flush=True)
 
     if args.jupyter:
         # Set Jovyan's GID to match passed in NB_GID if present
@@ -205,7 +205,7 @@ def main():
             try:
                 source = getattr(args, linkdir)
                 destination = os.path.join(basedir, linkdir)
-                file_exists_message = "Tried to link {} but it already exists; skipping".format(destination)
+                file_exists_message = "{} OK (found existing.)".format(destination)
                 os.symlink(source, destination)
             except FileExistsError:
                 print(file_exists_message)
@@ -297,7 +297,7 @@ def main():
                 if notebook_num > float(args.end):
                     print("    Notebook {} has completed; halting execution.".format(args.end))
                     break
-                print("    {}".format(notebooks_by_num[notebook_num]))
+                print("    {}".format(notebooks_by_num[notebook_num]), flush=True)
                 if not run_notebook(notebooks_by_num[notebook_num]):
                     print("    Notebook failed: terminating this sample.")
                     break

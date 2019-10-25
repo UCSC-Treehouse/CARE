@@ -37,4 +37,4 @@ USER jovyan
 ADD . /app
 
 WORKDIR /outputs
-ENTRYPOINT ["tini", "--", "python", "/app/run.py"]
+ENTRYPOINT ["tini", "--", "python", "/app/setup.py"]

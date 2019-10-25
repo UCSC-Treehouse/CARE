@@ -144,9 +144,15 @@
         </h4>
         <div style="padding:5%">
         Treehouse QC Metrics <br/>
-            Generated on {{nb_4pt25.Date}}<br/>
-            {% set reads = nb_4pt25['Read_count_table']['Total_sequences']/10**6%}
-            Total Reads: {{reads|round(1)}} million<br/>
+            {{nb_4pt25.Date}}<br/>
+
+            {% if nb_4pt25['Read_count_table']['Total_sequences'] is number %}
+                {% set reads = nb_4pt25['Read_count_table']['Total_sequences']/10**6%}
+                Total Reads: {{reads|round(1)}} million<br/>
+            {% else %}
+                Total Reads: {{nb_4pt25['Read_count_table']['Total_sequences']}}
+            {% endif %}
+
             <style>
             .nomargin th,.nomargin td { padding:2px !important}
             </style>
@@ -191,8 +197,9 @@
                     <tr class="even" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
                             <td align="left">MEND (M)</td>
                             <td align="center">
-                                {% set mil_umend = nb_4pt25['Read_count_table']['UMEND']/10**6 %}
-                                {{mil_umend|round(2)}}
+                                {% if nb_4pt25['Read_count_table']['UMEND'] is number %}
+                                    {{nb_4pt25['Read_count_table']['UMEND'] / 10**6 |round(2)}}
+                                {% else %}{{nb_4pt25['Read_count_table']['UMEND']}}{% endif %}
                             </td>
                             <td align="center">&gt; 10</td>
                             <td align="center">
@@ -213,7 +220,11 @@
                     {% endif %}
                     <tr class="odd" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
                             <td align="left">% MEND</td>
-                            <td align="center">{{nb_4pt25['UMEND_reads/Total_reads']['Result']*100}}</td>
+                            <td align="center">
+                                {% if nb_4pt25['UMEND_reads/Total_reads']['Result'] is number %}
+                                        {{nb_4pt25['UMEND_reads/Total_reads']['Result']*100}}
+                                {% else %}{{nb_4pt25['UMEND_reads/Total_reads']['Result']}}{% endif %}
+                            </td>
                             <td align="center">
                                 {% set ref = nb_4pt25['UMEND_reads/Total_reads']['Reference_range'].split(" - ")%}
                                 {{ ref[0]|float * 100 }} - {{ ref[1]|float * 100 }}

@@ -11,9 +11,9 @@ on [Docker hub](https://cloud.docker.com/u/ucsctreehouse/repository/docker/ucsct
 # Usage
 
 Download the background compendium and reference files:
-[vaske-2019-comparative-tumor-RNA-CARE-2019-09-14.tgz](https://xena.treehouse.gi.ucsc.edu/download/vaske-2019-comparative-tumor-RNA-CARE-2019-09-14.tgz)
+[vaske-2019-comparative-tumor-RNA-CARE-2019-09-14.tgz](https://xena.treehouse.gi.ucsc.edu/download/CARE/vaske-2019-comparative-tumor/vaske-2019-comparative-tumor-RNA-CARE-2019-10-24.tgz)
 
-MD5sum: fbd7712c9763aedaea0bd1db1dc99f1e
+MD5sum: 401c63e6a99a9b8a6d2d3cce5464bd7c
 
 Size: 4.3G when uncompressed
 

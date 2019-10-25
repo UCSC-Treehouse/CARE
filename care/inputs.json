@@ -1,0 +1,25 @@
+{
+    "readme":"For use by setup.py. Lists expected inputs to the CARE pipeline so we can check if they are missing and download as appropriate.",
+    "download_base_url":"https://xena.treehouse.gi.ucsc.edu/download/CARE",
+    "local_tgz_dir":"/work/resources",
+    "inputs": {
+        "compendium": {
+            "dir":"/work/cohort",
+            "download":"TumorCompendium_v10_PolyA.tgz"
+        },
+        "external references": {
+            "dir":"/work/references",
+            "download":"TreehouseReferences-2019-10-23.tgz"
+        },
+        "focus samples": {
+            "dir":"/work/inputs",
+            "download":"TreehouseExampleFocusSample-TH03_0013_S02-2019-10-23.tgz"
+
+        },
+        "manifest": {
+            "dir":"/work/manifest",
+            "download":"TreehouseExampleManifest-2019-10.24.tgz"
+        }
+    },
+    "output_dir":"/work/outputs"
+}

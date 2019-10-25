@@ -223,8 +223,11 @@
                     {% set RIN_ref_lower = RIN_ref[0] %}
                     {% set RIN_ref_upper = RIN_ref[1] %}
                     {% set RIN = nb_4pt25['RIN']['Rounded_result'] %}
-
-                    {% set pctUMEND = nb_4pt25['UMEND_reads/Total_reads']['Rounded_result']*100 %}
+                    {% if nb_4pt25['UMEND_reads/Total_reads']['Rounded_result'] is number %}
+                        {% set pctUMEND = nb_4pt25['UMEND_reads/Total_reads']['Rounded_result']*100 %}
+                    {% else %}
+                        {% set pctUMEND = nb_4pt25['UMEND_reads/Total_reads']['Rounded_result'] %}
+                    {% endif %}
                     
                     {% set passing = False %}
                     {% set rowColoringFailOrNot = "#ffe8e6" %}
@@ -553,7 +556,7 @@
                 </div>
                 <div style="margin-top:10px;">
                     <h4>Protocol</h4>
-                    The Treehouse Tertiary Analysis Protocol version used was
+                    The Treehouse CARE version used was
                     {{conf.info.git_url[48:]}}.
                     <!-- This is to get the version number, EXTREMELY BRITTLE :( -->
                     It can be accessed at {{conf.info.git_url}} and the Git hash is
@@ -1006,7 +1009,9 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
         {% set readcount_metrics = ["UMEND", "Total_sequences", "UM", "UMND",  "Multimapped_reads"] %}
         {% for metric in readcount_metrics%}
             <tr><td>{{metric | replace( "U", "")}}</td>
-            <td>{{"{:,}".format(nb_4pt25['Read_count_table'][metric] / 1000000)}} million</td></tr>
+            <td>{% if metric is number %} {{"{:,}".format(nb_4pt25['Read_count_table'][metric] / 1000000)}} million
+                {% else %} {{nb_4pt25['Read_count_table'][metric]}}
+                {% endif %}</td></tr>
         {% endfor %}
         </table>
         <h3> Metrics</h3>
