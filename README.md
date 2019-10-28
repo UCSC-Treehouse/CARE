@@ -45,6 +45,14 @@ If you prefer, you can manually download the input tgz files from the following 
 - https://xena.treehouse.gi.ucsc.edu/download/CARE/TreehouseExampleFocusSample-TH03_0013_S02-2019-10-23.tgz
 - https://xena.treehouse.gi.ucsc.edu/download/CARE/TreehouseExampleManifest-2019-10.24.tgz
 
+MD5sums:
+```
+cfafeb5ff7b93591d0a80894061b5f3e  TumorCompendium_v10_PolyA.tgz
+d616135b19a31f8c7a0cab4932d2fd01  TreehouseReferences-2019-10-23.tgz
+4bc8001b744d5ea6a8d9a94db06a7df9  TreehouseExampleFocusSample-TH03_0013_S02-2019-10-23.tgz
+03bb977bb9610a19c84e98a788a96d41  TreehouseExampleManifest-2019-10.24.tgz
+```
+
 To use, place them in the "resources" folder as the original tgz archive without extracting.
 
 ## Documentation
