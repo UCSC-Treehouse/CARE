@@ -30,7 +30,7 @@ Create a `SAMPLE_ID` dir inside the `inputs` dir of CARE. Then, move your `secon
 the input data into that `SAMPLE_ID` dir.
 
 ### Create manifest
-Create (or edit existing) `manifest/manifest.tsv` file in the CARE base directory. The first column contains your SAMPLE\_ID;
+Edit the `manifest.tsv` file in the CARE base directory to replace the test sample with your own samples. The first column contains your SAMPLE\_ID;
 then, separated by a tab character, the second column contains the "harmonized diagnosis" of your focus sample. This diagnosis
 should match one of those found in the "disease" column of the compendium clinical data. For example, the clinical data for
 the Tumor Compendium V10 Public PolyA can be found [here on UCSC Xena

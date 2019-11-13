@@ -32,34 +32,54 @@ def extract_item(local_tgzfile, final_location):
     tgz_name = os.path.basename(local_tgzfile)
     expected_tgz_dirname = os.path.splitext(tgz_name)[0] # FILENAME.tgz -> FILENAME
 
-    with tarfile.open(local_tgzfile, "r") as tar:
-        # Ensure it contains exactly 1 dir, named as expected
-        tar_root_dir = os.path.commonprefix(tar.getnames())
-        if tar_root_dir != expected_tgz_dirname:
-            click.echo("Error: expected {} to contain exactly one dir named {}".format(url, expected_tgz_dirname))
-            raise ValueError
-        for name in tar.getnames():
-            if "/../" in name:
-                click.echo("Error: Found path in tar that refers to parent dir: {}".format(name))
+    try:
+        with tarfile.open(local_tgzfile, "r") as tar:
+            # Ensure it contains exactly 1 dir, named as expected
+            tar_root_dir = os.path.commonprefix(tar.getnames())
+            if tar_root_dir != expected_tgz_dirname:
+                click.echo("Error: expected {} to contain exactly one dir named {}".format(url, expected_tgz_dirname))
                 raise ValueError
-        # Move all items out of the root dir (except for the dir itself) and extract directly to dest dir
-        members_to_extract = []
-        for member in tar.getmembers():
-            if member.name != tar_root_dir:
-                member.name = member.name.replace(tar_root_dir + "/", "", 1)
-                members_to_extract.append(member)
-        tar.extractall(path=final_location, members=members_to_extract)
+            for name in tar.getnames():
+                if "/../" in name:
+                    click.echo("Error: Found path in tar that refers to parent dir: {}".format(name))
+                    raise ValueError
+            # Move all items out of the root dir (except for the dir itself) and extract directly to dest dir
+            members_to_extract = []
+            for member in tar.getmembers():
+                if member.name != tar_root_dir:
+                    member.name = member.name.replace(tar_root_dir + "/", "", 1)
+                    members_to_extract.append(member)
+            tar.extractall(path=final_location, members=members_to_extract)
+    except EOFError as e:
+        click.echo(e)
+        click.echo("TGZ file {} is incomplete or corrupted - please try redownloading".format(local_tgzfile))
+        raise
+
     # And chmod the final_location dir to ugo-r so step0.ipynb doesn't error out
     read_only_mode = (~stat.S_IWUSR) & (~stat.S_IWGRP) & (~stat.S_IWOTH)
     os.chmod(final_location, os.stat(final_location).st_mode & read_only_mode)
     click.echo("Extracted into {}".format(final_location))
-        
+
+def mkdir_if_missing(path):
+    '''
+    Makes a dir, or does nothing if it exists.
+    '''
+    try:
+        os.mkdir(path)
+        click.echo("Made dir {}".format(path))
+    except OSError as e:
+        if e.errno != os.errno.EEXIST:
+            raise
+
+
 @cli.command()
 def run():
     with open("/app/inputs.json", "r") as f: 
         inputs = json.load(f)
+
     tgz_dir = inputs["local_tgz_dir"]
 
+    # Download any missing inputs into the local tgz holding dir
     for item, attrs in inputs["inputs"].items():
         click.echo("Checking for {} in {}...".format(item, attrs["dir"]), nl=False)
         tgz_path_if_exists = os.path.join(tgz_dir, attrs["download"])
@@ -69,21 +89,23 @@ def run():
             click.echo("Found TGZ file; extracting! (Found at: {})".format(tgz_path_if_exists))
             extract_item(tgz_path_if_exists, attrs["dir"])
         else:
+            mkdir_if_missing(tgz_dir) # make tgz dir if necessary before downloading
             url = "/".join([inputs["download_base_url"], attrs["download"]])
             click.echo("Couldn't find {}; downloading from {} and extracting.".format(item, url))
             download_item(url, tgz_path_if_exists)
             extract_item(tgz_path_if_exists, attrs["dir"])
 
     # Set up output dir
-    try:
-        os.mkdir(inputs["output_dir"])
-        click.echo("Made output dir {}".format(inputs["output_dir"]))
-    except OSError as e:
-        if e.errno != os.errno.EEXIST:
-            raise
+    mkdir_if_missing(inputs["output_dir"])
 
     # Then, transfer control to run.py
     runjupyter.main(raw_args=["--rollup", "/work/inputs"])
+
+@cli.command(context_settings=dict(ignore_unknown_options=True))
+@click.argument('args', nargs=-1, type=click.UNPROCESSED)
+def pass_args(args): # invoked as pass-args
+    '''Custom run. Don't do any setup but instead transfer control to run.py, passing along provided args.'''
+    runjupyter.main(raw_args=args)
 
 if __name__ == "__main__":
     cli()

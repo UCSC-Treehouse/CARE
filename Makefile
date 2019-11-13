@@ -1,4 +1,5 @@
-IMAGE=ucsctreehouse/care:0.15.0.0
+IMAGE=ucsctreehouse/care:0.15.0.1
+COHORT=v10_polya
 
 run:
 	 docker run \
@@ -15,3 +16,18 @@ run-dev:
 		-v `pwd`/care:/app:ro \
 		-v `pwd`/:/work \
 		$(IMAGE) run
+
+run-treehouse:
+	@echo Running $(IMAGE) vs compendium $(COHORT)
+	mkdir -p outputs
+	docker run \
+		--rm \
+		--user $$UID \
+		-v `pwd`:/work/rollup:ro \
+		-v `pwd`/manifest.tsv:/work/manifest.tsv:ro \
+		-v `pwd`/outputs:/work/outputs \
+		-v /private/groups/treehouse/archive:/treehouse:ro \
+		$(IMAGE) pass-args \
+			--inputs /treehouse/downstream \
+			--cohort /treehouse/compendium/$(COHORT) \
+			--references /treehouse/references

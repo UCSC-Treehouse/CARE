@@ -27,7 +27,7 @@ cd CARE
 
 Checkout the [latest release](https://github.com/UCSC-Treehouse/CARE/releases):
 
-```git checkout 0.15.0.0```
+```git checkout 0.15.0.1```
 
 Use Make to run the docker:
 ```make run```
@@ -35,7 +35,7 @@ Use Make to run the docker:
 This will:
  - Pull the docker
  - Download the background compendium and reference files if not already present. (May take several minutes; compendium download is ~1.5GB).
- - Download a test sample and test manifest
+ - Download a test sample
  - Run CARE on the test sample
 
 ### Manual downloads
