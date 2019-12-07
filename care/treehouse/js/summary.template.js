@@ -28,11 +28,24 @@
       } // end populateSections
     
     // Helper - If an element is present in the document, set innerHTML to text
+    // either the element's ID matches elementID, or, the element has classes "populate" and "p_elementId"
+    // this latter to allow non-unique populate
     function populate(elementId, text){
         if(document.getElementById(elementId) !== null){
             document.getElementById(elementId).innerHTML=text;
         } else {
-            console.log("Couldn't find '" + elementId + "' in the document to write contents.");
+
+            foundsome = false;
+            populables = document.getElementsByClassName("populate");
+            for (element of populables){
+                if (element.classList.contains("p_" + elementId)){
+                    element.innerHTML=text;
+                    foundsome=true;
+                }
+            }
+            if (! foundsome){
+                console.log("Couldn't find element labeled '" + elementId + "' to write contents");
+            }
         }
     }
 
@@ -108,6 +121,13 @@
           }
           for(let elem of document.getElementsByClassName(showHide[1])){
               elem.classList.add("hiddenForRegistryToggle");
+          }
+          // Special case - clinical data slide - is mock only for generic and visible for registry
+          clinSlide = document.getElementById("slideClinicalData");
+          if (isRegistry){
+              clinSlide.classList.add("toggle-body");
+          }else{
+              clinSlide.classList.add("toggle-mockOnly");
           }
       }
 
@@ -220,7 +240,7 @@
                   pages += '<h4 class="ui top center aligned inverted header">Molecular Findings</h4>';
                   
                   if( Object.keys(row["references"]).length > 0){
-                      pages += '<div class="ui top attached segment" style="margin:0px;">';
+                      pages += '<div class="ui top attached segment" style="margin:0px;padding:10px;">';
                   } else {
                       pages += '<div class="ui segment" style="margin:0px;">';
                   }
@@ -235,7 +255,7 @@
                   if( Object.keys(row["references"]).length > 0)
                   {
                       pages += '</div><div class="ui bottom attached segment"';
-                      pages += 'style="font-size:60%;line-height:1.2;margin-bottom:1%;">';
+                      pages += 'style="font-size:60%;line-height:normal;margin-bottom:1%;padding:10px;">';
                       pages += '<span class="ui horizontal label" style="margin-top:10px;">References</span><br/>' ;
                       for(ref in row["references"]){
                       pages += row["references"][ref] + "<br/>";
@@ -287,3 +307,43 @@
         today=[t[1],t[2],t[0]].join("/");
         return today;
       }
+
+
+    // Show/Hide the sticky note
+    function close_sticky(){
+        var style = document.getElementById('formatting_sticky').style;
+        Object.assign(style,{height:"30px", width:"30px", overflow:"hidden"});
+        document.getElementById('close_sticky_button').style.display="none";
+        document.getElementById('open_sticky_button').style.display="inline";
+    }
+    function open_sticky(){
+        document.getElementById('formatting_sticky').style.height="auto";
+        document.getElementById('formatting_sticky').style.width="125px";
+        document.getElementById('open_sticky_button').style.display="none";
+        document.getElementById('close_sticky_button').style.display="inline";
+    }
+
+    // Show/hide sections based on user selection
+    function show_all_sections(){
+        for(let elem of document.getElementsByClassName("hiddenForSectionToggle")){
+            elem.classList.remove("hiddenForSectionToggle");
+          }
+    }
+    function toggle_sections(showThisSection){
+        // Hide all sections then put back desired; for mockOnly also show body
+        let allSections = ["toggle-body", "toggle-extra", "toggle-mockOnly", "toggle-noPrintableSection"]
+        for(let section of allSections){
+            for (let elem of document.getElementsByClassName(section)){
+                elem.classList.add("hiddenForSectionToggle");
+            }
+        }
+        keepSections = [showThisSection]
+        if( showThisSection == "toggle-mockOnly"){
+            keepSections.push("toggle-body");
+        }
+        for(let section of keepSections){
+            for(let elem of document.getElementsByClassName(section)){
+                elem.classList.remove("hiddenForSectionToggle");
+            }
+        }
+    }

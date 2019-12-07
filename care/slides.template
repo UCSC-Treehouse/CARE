@@ -37,6 +37,22 @@
     </style>
 </head>
 <body class="document" onload="populateSections();toggleRegistryItems();">
+
+  <!-- Sticky note to set up formatting -->
+    <div id="formatting_sticky" class="noprint">
+      <a id="close_sticky_button" style="border:2px solid black;" onclick="close_sticky()">&nbsp;X&nbsp;</a>
+      <a id="open_sticky_button" style="border:2px solid black; display:none;" onclick="open_sticky()">&nbsp;+&nbsp;</a>
+      <br/><br/>
+    <button style="margin-bottom:5px;"
+      onclick="toggle_sections('toggle-body');window.print();">Print body (final)</button><br/>
+    <button style="margin-bottom:5px;"
+    onclick="toggle_sections('toggle-mockOnly');window.print();">Print body (mock)</button><br/>
+    <button style="margin-bottom:5px;"
+    onclick="toggle_sections('toggle-extra');window.print();">Print extra</button><br/>
+    <button style="margin-bottom:5px;"
+    onclick="show_all_sections()">Show all slides</button><br/>
+    </div>
+  <!-- end sticky note -->
     
     <table><!-- this table contains all slides. Headers and footers go here and will repeat when printed to PDF. -->
         <tfoot class="repeatedFooter"><tr>
@@ -53,7 +69,7 @@
         </tr></tfoot>
     <tbody><tr><td> <!-- You may now start slides -->
 
-            
+    <div class="toggle-body">
     <div class="page" id="slideTitlePage"> <!-- Title page -->
         <h2 class="ui center header" style="text-align:center;margin:px;margin-top:2in;">
             Treehouse Analysis
@@ -61,20 +77,25 @@
         <h3 class="ui center header" style="text-align:center;margin:px;margin-bottom:2in;">
             Focus Sample: <span id="partner_id">XXXXXXXXX</span> ({{sample_id }})
         </h3>
+        <h3 class="ui center header noRegistry" style="text-align:center;margin:.25in;">
+            <span class="populate p_gender">~~~</span>
+            diagnosed with <span class="populate p_diagnosis">~~~~</span>
+            at age <span class="populate p_age">~~</span>
+        </h3>
     </div>
     <div class="page" id="slideClinicalData" style="justify-content:left;">
         <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;">
-            Clinical Data
+            Clinical Data <span class="noRegistry">(For mock only)<span>
         </h4>
         <!-- Clinical data table: two divs -->
             <div class="ui basic top attached table" style="display:flex;flex-direction:column;">
                 <span class="clinicalrow">
-                    <span class="ui horizontal label">Diagnosis</span><span id="diagnosis">~~~~</span>
+                    <span class="ui horizontal label">Diagnosis</span><span class="populate p_diagnosis">~~~~</span>
                 </span>
                 
                 <span class="clinicalrow">
                     <span style="flex-basis:35%;">
-                        <span class="ui horizontal label">Gender</span><span id="gender">~~</span>
+                        <span class="ui horizontal label">Gender</span><span class="populate p_gender">~~</span>
                     </span>
                     <span style="flex-basis:65%;">
                         <span class="ui horizontal label">Anatomical Source</span><span id="sample_submitted">~~~~</span>
@@ -82,7 +103,7 @@
                 </span>
                 <span class="clinicalrow">
                     <span style="flex-basis:35%;">
-                        <span class="ui horizontal label">Age at Diagnosis</span><span id="age">~~</span>
+                        <span class="ui horizontal label">Age at Diagnosis</span><span class="populate p_age">~~</span>
                     </span>
                     <span style="flex-basis:65%;">
                         <span class="ui horizontal label">Sample Collected by 
@@ -115,7 +136,7 @@
             Molecular Testing
         </h4>
         <div>
-        <table class="ui basic table"
+        <table class="ui basic table registryOnly"
                style="margin:0.2in;font-weight:500;padding:10px;table-layout:fixed;width:95%">
             <tr><td style="padding:0px;padding-bottom:10px;border-bottom:none;">
                 <span class="ui horizontal label">Foundation Medicine</span>
@@ -127,7 +148,8 @@
                 <thead>
                     <tr>
                         <td style="padding:0px;padding-bottom:10px;border-bottom:none;">
-                            <span class="ui horizontal label">Additional Molecular Testing</span>
+                            <span class="ui horizontal label">
+                                <span class="registryOnly">Additional </span>Molecular Testing</span>
                         </td>
                     </tr>
                 </thead>
@@ -145,14 +167,12 @@
         <div style="padding:5%">
         Treehouse QC Metrics <br/>
             {{nb_4pt25.Date}}<br/>
-
             {% if nb_4pt25['Read_count_table']['Total_sequences'] is number %}
                 {% set reads = nb_4pt25['Read_count_table']['Total_sequences']/10**6%}
                 Total Reads: {{reads|round(1)}} million<br/>
             {% else %}
                 Total Reads: {{nb_4pt25['Read_count_table']['Total_sequences']}}
             {% endif %}
-
             <style>
             .nomargin th,.nomargin td { padding:2px !important}
             </style>
@@ -166,24 +186,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% set passing = False %}
-                    {% set rowColoringFailOrNot = "#ffe8e6" %}
-                    {% set textColorFailOrNot = "#db2828" %}
-                    {% if nb_4pt25['RIN']["In_reference_range?"]=="Yes"%}
-                        {% set passing = True %}
-                        {% set rowColoringFailOrNot = "" %}
-                        {% set textColorFailOrNot = "" %}
-                    {% endif %}
+                    {%- set passing = False -%}
+                    {%- set rowColoringFailOrNot = "#ffe8e6" -%}
+                    {%- set textColorFailOrNot = "#db2828" -%}
+                    {%- if nb_4pt25['RIN']["In_reference_range?"]=="Yes" -%}
+                        {%- set passing = True -%}
+                        {%- set rowColoringFailOrNot = "" -%}
+                        {%- set textColorFailOrNot = "" -%}
+                    {%- endif %}
                     <tr class="odd" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
                             <td align="left">RIN</td>
                             <td align="center">{{nb_4pt25['RIN']['Result']}}</td>
                             <td align="center">{{nb_4pt25['RIN']['Reference_range']}}</td>
                             <td align="center">
-                                {% if passing %}
+                                {%- if passing -%}
                                     PASS
-                                {% else %}
+                                {%- elif nb_4pt25['RIN']["In_reference_range?"]=="NA" -%}
+                                    NA
+                                {%- else -%}
                                     FAIL
-                                {% endif %}
+                                {%- endif -%}
                             </td>
                         </tr>
                     {% set passing = False %}
@@ -198,7 +220,7 @@
                             <td align="left">MEND (M)</td>
                             <td align="center">
                                 {% if nb_4pt25['Read_count_table']['UMEND'] is number %}
-                                    {{nb_4pt25['Read_count_table']['UMEND'] / 10**6 |round(2)}}
+                                    {{(nb_4pt25['Read_count_table']['UMEND'] / 10**6) |round(2)}}
                                 {% else %}{{nb_4pt25['Read_count_table']['UMEND']}}{% endif %}
                             </td>
                             <td align="center">&gt; 10</td>
@@ -313,6 +335,9 @@
             </div>
         {% endif %}
     </div><!-- end slide: most correlated samples table -->
+    <div id="slidePersonalizedCohortCounts_alternate_parent">
+    {#- If we have a curated cohort, cohort counts slide is moved to here -#}
+    </div>
     <!-- Slide: lead molecular finding aka primary categorization -->    
     <div class="page registryOnly" id="slideLeadMolecularFinding" style="justify-content:left;"> 
 
@@ -393,14 +418,15 @@
     <div id="analyst_custom_images"><!-- Holds the 'analyst custom images' slides -->
         <!-- one slide per custom images here, added by javascript -->
     </div>
-
+    </div> <!-- end div toggle-body -->
     <!-- additional support - title page -->
-    <div class="page" id="additional_support_title_slide"
+    <div class="page toggle-noPrintableSection" id="additional_support_title_slide"
          style="display:flex;flex-align:center">
         <h2 class="ui center header" style="text-align:center;margin:px;margin-top:2in;">
             Additional Support
         </h2>
     </div>
+    <div class="toggle-extra"><!-- toggle-extra slides -->
     <!-- Up outliers vs PC cohort - histograms -->
     {% for gene in nb_4pt5.gene_plots %}
         <div class="page" id="slideOutlierHistogram_{{gene}}">
@@ -502,7 +528,16 @@
             {%- endfor -%}
         </table>
         </div><!-- end personalized cohort counts -->
-    <div class="page">
+   {%- if conf.info.rollup -%}
+   <script>
+       /* If we have a curated cohort, move the personalized cohort counts to  right after the MCS table */
+       parent = document.getElementById("slidePersonalizedCohortCounts_alternate_parent")
+       child = document.getElementById("slidePersonalizedCohortCounts")
+       parent.appendChild(child)
+   </script>
+   {%- endif -%}
+    </div><!-- end toggle-extra slides -->
+    <div class="page toggle-noPrintableSection">
         <h2 class="ui center header" style="text-align:center;margin:px;margin-top:2in;">
             This slide intentionally left blank.
             <!-- This pins the footer on the previous slide to the bottom. Do not print this slide. -->

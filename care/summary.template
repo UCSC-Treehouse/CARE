@@ -116,6 +116,10 @@
             <h3 class="ui center header" style="text-align:center;margin:px;margin:5px 0px 10px 0px;">
                 Treehouse Analysis: Sample <span id="partner_id">XXXXXXXXX</span> ({{sample_id }})
             </h3>
+            <h4 class="ui center header" style="text-align:center;margin:0px;">
+                Analyst: <span id="analyst_name"></span> &emsp;&emsp;&emsp;&emsp;
+                Reviewer: <span id="reviewer_name"></span>
+             </h4>
         </div>
         
         <!-- FRONT PAGE MODULES -->
@@ -169,7 +173,7 @@
             </div> <!--end clinical table two divs -->
            
             <!-- foundation medicine and other molecular testing -->
-            <table class="ui basic top attached table" id="m_foundation_medicine"
+            <table class="ui basic top attached table registryOnly" id="m_foundation_medicine"
                    style="padding:5px;margin-top:0px;font-size:12px;margin-bottom:0px;">
                 <tr>
                         <td style="padding:0px;margin:0px;">
@@ -182,7 +186,8 @@
               <thead>
                     <tr>
                         <td style="padding:0px;border-bottom:none;">
-                            <span class="ui horizontal label" style="margin:0px;">Additional Molecular Testing</span>
+                            <span class="ui horizontal label" style="margin:0px;">
+                                <span class="registryOnly">Additional </span>Molecular Testing</span>
                         </td>
                     </tr>
                 </thead>
@@ -275,11 +280,13 @@
                             
                             <td align="center">{{nb_4pt25['RIN']['Rounded_reference_range']}}</td>
                             <td align="center">
-                                {% if passing %}
+                                {%- if passing -%}
                                     PASS
-                                {% else %}
+                                {%- elif nb_4pt25['RIN']["In_reference_range?"]=="NA" -%}
+                                    NA
+                                {%- else -%}
                                     FAIL
-                                {% endif %}
+                                {%- endif -%}
                             </td>
                         </tr>
                     {% set passing = False %}
@@ -557,10 +564,10 @@
                 <div style="margin-top:10px;">
                     <h4>Protocol</h4>
                     The Treehouse CARE version used was
-                    {{conf.info.git_url[48:]}}.
+                    {{conf.info.git_url[52:]}}.
                     <!-- This is to get the version number, EXTREMELY BRITTLE :( -->
-                    It can be accessed at {{conf.info.git_url}} and the Git hash is
-                    {{conf.info.git_hash}}.
+                    It can be accessed at <a href="{{conf.info.git_url}}">{{conf.info.git_url}}</a>
+                    and the Git hash is {{conf.info.git_hash}}.
                 </div>
             </div>
         </div>

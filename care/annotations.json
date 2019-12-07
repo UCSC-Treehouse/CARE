@@ -10,6 +10,14 @@ let annotations = {
                 "If you don't know which it is, leave it as 'generic'.",
         "value":"generic"
     },
+    "analyst_name": {
+        "help": "Your name here! The person analyzing these results",
+        "value": "________"
+    },
+    "reviewer_name": {
+        "help": "Name of the person who will review your analysis",
+        "value": "________"
+    },
     "partner_id": {
         "help": "Partner ID (eg stanford's ID for this patient)",
         "value": "XX XX"

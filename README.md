@@ -27,7 +27,7 @@ cd CARE
 
 Checkout the [latest release](https://github.com/UCSC-Treehouse/CARE/releases):
 
-```git checkout 0.15.0.1```
+```git checkout 0.16.0.0```
 
 Use Make to run the docker:
 ```make run```

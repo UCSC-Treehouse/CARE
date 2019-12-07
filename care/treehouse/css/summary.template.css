@@ -104,9 +104,6 @@ a slide, as well as some small explanatory text below.*/
 
 /* front page layout */
 #front_page_content{  /* contains all front page modules */
-    display:flex;
-    flex-direction:column;
-    justify-content:space-around;
     height:10in;
     width:7.7in;
 }

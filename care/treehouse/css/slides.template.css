@@ -1,7 +1,8 @@
-.displayNone { /* attach this class to things and they will go away without forgetting their previous display */
+.displayNone {
     display:none !important;
 }
-.hiddenForRegistryToggle { /* Can't be rolled into displayNone or items might be toggled on when supposed to remain hidden */
+.hiddenForRegistryToggle, .hiddenForSectionToggle {
+    /* Can't be rolled into displayNone or items might be toggled on when supposed to remain hidden */
     display:none !important;
 }
 
@@ -88,9 +89,11 @@ input[type='checkbox']{
         page-break-inside: avoid;
         height:7.5in;
         width:10in;
-}
-    
-    
+    }
+    .toggle-mockOnly {
+        background-color:rgba(255, 255, 180) !important;
+    }
+
     .page.appendices { /* Give the appendix some padding back when printed */
         padding:0.4in !important;
     }
@@ -141,4 +144,21 @@ a slide, as well as some small explanatory text below.*/
     padding:0.1in !important;
     text-align:center;
     line-height:130%;
+}
+   div#formatting_sticky {
+    position:fixed;
+    z-index:10;
+    margin-top:20px;
+    margin-left:900px;
+    padding:10px;
+    width:125px;
+    background-color:rgba(255, 255, 100, 0.25);
+    font-size:8pt;
+    line-height:normal;
+   }
+   #formatting_sticky span,a,button{
+    background-color:rgba(255, 255, 180, 0.5);
+   }
+.toggle-mockOnly {
+    background-color:rgba(255, 255, 180);
 }

@@ -1,4 +1,4 @@
-IMAGE=ucsctreehouse/care:0.15.0.1
+IMAGE=ucsctreehouse/care:0.16.0.0
 COHORT=v10_polya
 
 run:
