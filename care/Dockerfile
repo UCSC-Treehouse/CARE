@@ -29,6 +29,10 @@ RUN R -e "install.packages(c('openxlsx'), repos='http://cran.rstudio.com/')"
 RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("biomaRt")'
 RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("pathview")'
 
+# New scripts for the isoform report
+RUN export TAR="/bin/tar" && R -e "require(devtools); install_version('vctrs', version = '0.2.0', repos = 'http://cran.us.r-project.org'); install_version('tidyverse', version = '1.3.0', repos = 'http://cran.us.r-project.org')"
+RUN R -e "install.packages(c('treemapify', 'BiocManager'), repos='https://cran.cnr.berkeley.edu/');BiocManager::install('Sushi')"
+
 USER root
 RUN mkdir /work; chmod ugo+rwx /work
 RUN chmod -R o+w /home/jovyan/.ipython

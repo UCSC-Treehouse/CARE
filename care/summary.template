@@ -1366,7 +1366,55 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
                     {{- gene }}{{" "}}
                 {%- endif -%}
             {%- endfor -%}
-        </div>
+        </div><!-- end PC and PD outliers -->
+
+        <div class="module appendix"><!-- Isoform Report -->
+        <h4 class="ui top attached center aligned inverted header">
+            Isoform Report</h4>
+            <div class="ui attached">
+            {%- if nb_8pt25.found_isoforms_file -%}
+                {%- if nb_8pt25.isoform_results -%}
+                    {%- for (gene, gene_items) in nb_8pt25.isoform_results | dictsort -%}
+                        {%- if gene_items.isoform_table -%}
+                            <h5>{{gene}} isoforms, ordered by IsoPct</h5>
+                            <table class="ui attached celled table">
+                                <tr>
+                                {%- for key in nb_8pt25.isoform_table_key_order -%}
+                                    <th>{{key}}</th>
+                                {%- endfor -%}
+                                </tr>
+                                {%- for transcript in gene_items.isoform_table -%}
+                                    <tr>
+                                    {%- for key in nb_8pt25.isoform_table_key_order -%}
+                                    <td> {{transcript[key]}}</td>
+                                    {%- endfor -%}
+                                    </tr>
+                                {%- endfor -%}
+                            </table>
+                        {%- else -%}
+                            Isoform expression table not found for {{gene}}. Please check the isoform notebook for errors.<br/>
+                        {%- endif -%}
+                        {%- if gene_items.expressed_isoforms_img_data -%}
+                            <img style="width:100%;" src="data:img/png;base64, {{gene_items.expressed_isoforms_img_data}}">
+                        {%- else -%}
+                            Expressed isoforms image not found for {{gene}}. Please check the isoform notebook for errors.<br/>
+                        {%- endif -%}
+                        {%- if gene_items.transcript_biotypes_img_data -%}
+                            <img style="width:60%;" src="data:img/png;base64, {{gene_items.transcript_biotypes_img_data}}">
+                        {%- else -%}
+                            Transcript biotypes image not found for {{gene}}. Please check the isoform notebook for errors.
+                        {%- endif -%}
+                        <br/>
+                    {%- endfor -%}
+                {%- else -%}
+                No genes of interest were found; isoform report not generated.
+                {%- endif -%}
+            {%- else -%}
+                No rsem_isoforms.results file was found for this sample; isoforms are unknown.
+            {%- endif -%}
+            </div>
+        </div><!-- end isoform report -->
+
     </div> <!-- End Page - treehouse internal appendix -->
     <!-- placeholder ids -->
     <div style="display:none;">

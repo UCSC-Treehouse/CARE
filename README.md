@@ -27,7 +27,7 @@ cd CARE
 
 Checkout the [latest release](https://github.com/UCSC-Treehouse/CARE/releases):
 
-```git checkout 0.16.0.0```
+```git checkout 0.17.0.0```
 
 Use Make to run the docker:
 ```make run```
@@ -41,14 +41,14 @@ This will:
 ### Manual downloads
 If you prefer, you can manually download the input tgz files from the following URLs:
 - https://xena.treehouse.gi.ucsc.edu/download/CARE/TumorCompendium_v10_PolyA.tgz
-- https://xena.treehouse.gi.ucsc.edu/download/CARE/TreehouseReferences-2019-10-23.tgz
+- https://xena.treehouse.gi.ucsc.edu/download/CARE/TreehouseReferences-2020-01-22.tgz
 - https://xena.treehouse.gi.ucsc.edu/download/CARE/TreehouseExampleFocusSample-TH03_0013_S02-2019-10-23.tgz
 - https://xena.treehouse.gi.ucsc.edu/download/CARE/TreehouseExampleManifest-2019-10.24.tgz
 
 MD5sums:
 ```
 cfafeb5ff7b93591d0a80894061b5f3e  TumorCompendium_v10_PolyA.tgz
-d616135b19a31f8c7a0cab4932d2fd01  TreehouseReferences-2019-10-23.tgz
+38c312184ea4f85cd9ff5807e487f079  TreehouseReferences-2020-01-22.tgz
 4bc8001b744d5ea6a8d9a94db06a7df9  TreehouseExampleFocusSample-TH03_0013_S02-2019-10-23.tgz
 03bb977bb9610a19c84e98a788a96d41  TreehouseExampleManifest-2019-10.24.tgz
 ```

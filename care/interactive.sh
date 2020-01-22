@@ -1,6 +1,6 @@
 
-# Build:
-# docker build -f Dockerfile.interactive -t protocol-interactive .
+# Build the interactive image based on your latest test image, eg:
+# docker build -f Dockerfile.interactive -t care-interactive --build-arg BASE_IMAGE=care:TestBuild .
 # Run:
 # ./interactive.sh dockername port
 # (Default port: 18881)
@@ -21,5 +21,5 @@ docker run --rm -it -p${port}:8888 \
     -v `pwd`:/app \
     -v `pwd`/outputs:/work/outputs \
     -v /private/groups/treehouse:/treehouse:ro \
-    --name $1 protocol-interactive:latest
+    --name $1 care-interactive:latest
 
