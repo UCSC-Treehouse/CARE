@@ -25,7 +25,7 @@
               elem.style.fontSize = calcfont + "px";
           }
         }
-      } // end populateSections
+      } // end populateSections()
     
     // Helper - If an element is present in the document, set innerHTML to text
     // either the element's ID matches elementID, or, the element has classes "populate" and "p_elementId"
@@ -100,7 +100,26 @@
                     // Also make the box red
                     document.getElementById("highlight_failed_qc_div").classList.add("red");
                 }
-            }
+            },
+            "optional_rin_score": function (info){
+                // retrieve global nb4pt25_RIN_Precise_result and reference_lower from script in summary or slides.template
+                // Then, only set this value if Precise_result was previously NA; if not, use that canonical value
+                if (info["value"] && nb4pt25_RIN_Precise_result == "NA") {
+                    // Set RIN value td to what's retrieved from annotations.json
+                    let rin_annotations = Number(info["value"])
+                    document.getElementById("rin_score_display").innerHTML = rin_annotations;
+
+                    // Set PASS or FAIL td; also reset row color if new value is PASS
+                    let rin_min_from_notebook = Number(nb4pt25_RIN_Precise_reference_lower);
+                    if (rin_min_from_notebook <= rin_annotations ){
+                        document.getElementById("rin_passfail_display").innerHTML = "PASS";
+                        rin_row = document.getElementById("rin_row_display");
+                        rin_row.style.backgroundColor = rin_row.style.color = "";
+                    }else{
+                        document.getElementById("rin_passfail_display").innerHTML = "FAIL";
+                    }
+                }
+            } // end optional_rin_score
         } // end custom_parsers dict
         custom_parsers[item](contents); // Call the parser
     }
@@ -123,11 +142,13 @@
               elem.classList.add("hiddenForRegistryToggle");
           }
           // Special case - clinical data slide - is mock only for generic and visible for registry
-          clinSlide = document.getElementById("slideClinicalData");
-          if (isRegistry){
-              clinSlide.classList.add("toggle-body");
-          }else{
-              clinSlide.classList.add("toggle-mockOnly");
+          if(documentTypeIsSlides){
+              clinSlide = document.getElementById("slideClinicalData");
+              if (isRegistry){
+                  clinSlide.classList.add("toggle-body");
+              }else{
+                  clinSlide.classList.add("toggle-mockOnly");
+              }
           }
       }
 
@@ -309,7 +330,7 @@
       }
 
 
-    // Show/Hide the sticky note
+    // Show/Hide the sticky note (both summary and slides)
     function close_sticky(){
         var style = document.getElementById('formatting_sticky').style;
         Object.assign(style,{height:"30px", width:"30px", overflow:"hidden"});
@@ -318,7 +339,7 @@
     }
     function open_sticky(){
         document.getElementById('formatting_sticky').style.height="auto";
-        document.getElementById('formatting_sticky').style.width="125px";
+        document.getElementById('formatting_sticky').style.width="160px";
         document.getElementById('open_sticky_button').style.display="none";
         document.getElementById('close_sticky_button').style.display="inline";
     }
@@ -329,6 +350,27 @@
             elem.classList.remove("hiddenForSectionToggle");
           }
     }
+
+    // Summary. show full summary or 1-page only.
+    // Add toggle-fullSummary class to hide an element in the 1-page summary
+    function toggle_full_summary(showFull){
+        let hideableSections = ["toggle-fullSummary"]
+        if(showFull){
+            for(let section of hideableSections){
+                for (let elem of document.getElementsByClassName(section)){
+                    elem.classList.remove("hiddenForSectionToggle");
+                }
+            }
+        } else { // Show 1-page only
+            for(let section of hideableSections){
+                for (let elem of document.getElementsByClassName(section)){
+                    elem.classList.add("hiddenForSectionToggle");
+                }
+            }
+        }
+    }
+
+    // Slides
     function toggle_sections(showThisSection){
         // Hide all sections then put back desired; for mockOnly also show body
         let allSections = ["toggle-body", "toggle-extra", "toggle-mockOnly", "toggle-noPrintableSection"]

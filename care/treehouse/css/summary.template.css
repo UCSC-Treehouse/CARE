@@ -1,7 +1,8 @@
 .displayNone { /* attach this class to things and they will go away without forgetting their previous display */
     display:none !important;
 }
-.hiddenForRegistryToggle { /* Can't be rolled into displayNone or items might be toggled on when supposed to remain hidden */
+.hiddenForRegistryToggle, .hiddenForSectionToggle { 
+    /* Can't be rolled into displayNone or items might be toggled on when supposed to remain hidden */
     display:none !important;
 }
 
@@ -23,10 +24,17 @@ div.module h4.ui.header{
 div.module div.ui.segment{
     /*margin:0px; */
 }
-
-div.footerclass{
-    padding:3px;
-    line-height:95%;
+#header, #footer {
+        padding:0.1in;
+}
+#header {
+    font-size:0.7em;
+    width:100%;
+    text-align:center;
+}
+#footer {
+    font-size:0.7em;
+    line-height:100%;
     display:flex;
     justify-content:space-between;
     flex-wrap:nowrap;
@@ -54,8 +62,17 @@ div.ui.bottom.attached.message {
     margin-top:0.5in;
 }
 @media print {
-    thead.appendixheader {display: table-header-group;}
-    tfoot.appendixfooter {display: table-footer-group;}
+
+    /* Pin header & footer text to top/bottom of page */
+    header {
+        position: fixed;
+        top: 0;
+    }
+    footer {
+        position: fixed;
+         bottom: 0;
+    }
+
     .page.appendices { /* Give the appendix some padding back when printed */
        padding-left:0.4in !important;
        padding-right:0.4in !important;
@@ -147,4 +164,20 @@ a slide, as well as some small explanatory text below.*/
 
 .toprightBox { /* the box in the upper right of front page summary */
  min-width:145px;
+}
+
+div#formatting_sticky {
+    position:fixed;
+    z-index:10;
+    margin-top:20px;
+    margin-left:950px;
+    padding:10px;
+    width:160px;
+    background-color:rgba(255, 255, 100, 0.25);
+    font-size:8pt;
+    line-height:normal;
+}
+
+#formatting_sticky span,a,button{
+    background-color:rgba(255, 255, 180, 0.5);
 }

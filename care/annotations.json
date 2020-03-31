@@ -37,6 +37,7 @@ let annotations = {
         "value": "XXXXXXXXX"
     },
     "sample_submitted": {
+        "help": "anatomical tissue source of this sample",
         "value": "XXXX XX"
     },
     "relevant_clinical_notes": {
@@ -52,6 +53,11 @@ let annotations = {
     "sample_received": {
         "help": "When did we receive the sample",
         "value": "XX/XX/2019"
+    },
+    "optional_rin_score": {
+        "doCustomParse":true,
+        "help": "Numerical RIN score from 1 to 10; can only be used when the automatically inserted RIN score is 'NA'.",
+        "value": ""
     },
     "foundation_medicine":{
         "help": "Describe the foundation medicine results here in a complete sentence, with the date at the end.",

@@ -31,7 +31,8 @@ def run_notebook(notebook):
     '''
     with open(notebook) as f:
         nb = nbformat.read(f, as_version=4)
-    ep = ExecutePreprocessor(timeout=4000, kernel_name='python2')
+        kernel = nb.metadata.kernelspec.name
+    ep = ExecutePreprocessor(timeout=4000, kernel_name=kernel)
     ran_ok=False
 
     try:

@@ -36,6 +36,37 @@
     </style>
 </head>
 <body class="document" onload="populateSections();toggleRegistryItems();">
+    <!-- Header & footer - text will appear on all pages -->
+    <header id="header">
+        <p>FOR RESEARCH PURPOSES ONLY &bull; PREPARED FOR THE CLINICAL TEAM</p>
+    </header>
+    <footer id="footer">
+        <img src="https://treehousegenomics.soe.ucsc.edu/wp-content/uploads/2018/01/GILogoForTertiarySlides.png"
+            style="height:0.3in;margin-right:0.1in;">
+        <div>
+            Copyright © 2019 The Regents of the University of California &bull; All Rights Reserved &bull;
+            Created by Treehouse Childhood Cancer Initiative<br/> The TumorMap and Outlier tests are research tests developed
+            and evaluated at the University of California Santa Cruz. These tests have not been cleared or approved by the FDA.
+            The results from these tests are intended to serve as guidance,
+            with findings confirmed by a clinically approved test.
+        </div>
+    </footer>
+
+  <!-- Sticky note to set up formatting -->
+    <div id="formatting_sticky" class="noprint">
+      <a id="close_sticky_button" style="border:2px solid black;" onclick="close_sticky()">&nbsp;X&nbsp;</a>
+      <a id="open_sticky_button" style="border:2px solid black; display:none;" onclick="open_sticky()">&nbsp;+&nbsp;</a>
+      <br/><br/>
+    <button style="margin-bottom:5px;"
+      onclick="toggle_full_summary(false)">Show one-page summary</button><br/>
+    <button style="margin-bottom:5px;"
+    onclick="toggle_full_summary(true)">Show full summary</button><br/>
+    <button style="margin-bottom:5px;"
+    onclick="window.print();">Print</button><br/>
+    </div>
+  <!-- end sticky note -->
+
+
     {% if "S01" not in sample_id %}
     <!-- Alert if we appear to be a _S02, _S03, etc. -->
         <div id="other_samples_alert" class="noprint"
@@ -104,15 +135,18 @@
         <div id="analysis_failed" style="display:none;"><!--placeholder when did not fail--></div>
     {% endif %}
 
+    <!-- Wrapper table: All paged content is contained in this table to allow placeholder footers to take effect-->
+    <table>
+        <thead id="ph_header"><tr><td>&nbsp;</td></tr></thead>
+        <tfoot id="ph_footer"><tr><td>&nbsp;</td></tr></tfoot>
+        <tbody><tr><td>
+
     <div class="page" id="front_page"> <!-- Front Page-->
         <!-- HEADER -->
         <img src="https://treehousegenomics.soe.ucsc.edu/wp-content/uploads/2016/08/LG_UCSC_GenomiceInstitute_Treehouse_Logo.png"
             style="position:absolute;left:0.1in;top:0.1in;width:1.5in;">
         <div id="date_of_analysis" style="position:absolute;left:7.5in;top:0.2in;">xx/xx/2018</div>
         <div>
-            <p style="text-align:center;font-size:0.7em;" class="ui">
-                FOR RESEARCH PURPOSES ONLY &bull; PREPARED FOR THE CLINICAL TEAM
-            </p>
             <h3 class="ui center header" style="text-align:center;margin:px;margin:5px 0px 10px 0px;">
                 Treehouse Analysis: Sample <span id="partner_id">XXXXXXXXX</span> ({{sample_id }})
             </h3>
@@ -217,9 +251,12 @@
                 <div class="registryOnly" style="padding:2.5px;"></div>
                 <span class="ui horizontal label"> Treehouse QC Metrics</span><br/>
                 <span id="primary_categorization_notes">
+                    <script>
+                        // these are needed for the RIN section of parseCustom in summary.template.js
+                        let nb4pt25_RIN_Precise_result = "{{ nb_4pt25['RIN']['Precise_result'] }}";
+                        let nb4pt25_RIN_Precise_reference_lower = "{{ nb_4pt25['RIN']['Precise_reference_lower'] }}";
+                    </script>
                     <table id='qctable' border='1' style='font-size:7pt;'>
-                    
-                        
                     {% set asterisk = nb_4pt25["Asterisk"] %}
                         
                     {% set UMENDthreshold = nb_4pt25["UMEND_threshold"]/10**6 %}
@@ -256,9 +293,10 @@
                     </tr>
                     <tbody>
                     
-                    <tr class="odd" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
+                    <tr class="odd" id="rin_row_display"
+                        style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}">
                             <td align="center">RIN</td>
-                            <td align="center">
+                            <td align="center" id="rin_score_display">
                                 {% if nb_4pt25['RIN']['Result'] is string %}
                                     {{ nb_4pt25['RIN']['Result'] }}
                                 {% else %}
@@ -279,7 +317,7 @@
                             </td>
                             
                             <td align="center">{{nb_4pt25['RIN']['Rounded_reference_range']}}</td>
-                            <td align="center">
+                            <td align="center" id="rin_passfail_display">
                                 {%- if passing -%}
                                     PASS
                                 {%- elif nb_4pt25['RIN']["In_reference_range?"]=="NA" -%}
@@ -442,41 +480,9 @@
             </div>
         </div> <!-- End Tumormap Graphic -->
         </div> <!-- id="pathway_and_tumormap" -->  
-        <!-- footer on front page -->
-        <div id="frontpage_regnote" class="footerclass">
-            <img src="https://treehousegenomics.soe.ucsc.edu/wp-content/uploads/2018/01/GILogoForTertiarySlides.png"
-                         style="height:0.3in;margin-right:0.1in;">
-                    <div style="font-size:60%;">
-                        The TumorMap and Outlier tests are research tests developed and evaluated at the
-                        University of California Santa Cruz. These tests have not been cleared or approved by the FDA.
-                        The results from these tests are intended to serve as guidance, with findings
-                        confirmed by a clinically approved test.
-                    </div>
-        </div>
         </div><!-- end of front_page_content div -->
     </div> <!-- end of PAGE 1 div -->
     <div class="page appendices" style="height:auto;margin-top:0in;"><!-- PAGE 2 : APPENDIX -->
-
-        <table><!-- this table contains all appendixes for the purpose of adding repeated headers/footers -->
-            <thead class="appendixheader"><tr><td>
-                <p style="text-align:center;font-size:0.7em;margin-bottom:0.1in;" class="ui">
-                FOR RESEARCH PURPOSES ONLY &bull; PREPARED FOR THE CLINICAL TEAM
-                </p>
-            </td></tr></thead>
-            <tfoot class="appendixfooter"><tr><td>
-                <div class="footerclass">
-                    <img src="https://treehousegenomics.soe.ucsc.edu/wp-content/uploads/2018/01/GILogoForTertiarySlides.png"
-                         style="height:0.3in;margin-right:0.1in;">
-                    <div style="font-size:60%;">
-                        The TumorMap and Outlier tests are research tests developed and evaluated at the
-                        University of California Santa Cruz. These tests have not been cleared or approved by the FDA.
-                        The results from these tests are intended to serve as guidance, with findings
-                        confirmed by a clinically approved test.
-                    </div>
-                </div>
-            </td></tr></tfoot>
-            <tbody>
-                <tr><td>
                 
  <!-- secondpage: move it to its own page later -->
          <h2 class="ui center header" style="text-align:center;">
@@ -499,7 +505,7 @@
  <!-- end secondpage -->
                 
                 
-        
+    <div class="toggle-fullSummary"><!-- appendix part 1 container -->
         
         <h2 class="ui center header" style="text-align:center;">
             Appendix to Treehouse Comparative RNA-Seq Analysis Report
@@ -766,10 +772,10 @@
                                 ["first_and_second_degree_mcs_cohort", 
                                     "First and Second-Degree MCS", 
                                     "first_and_second_degree_thresholds"],
-                                ["diagnosed_disease_cohort", focusdisease_cohort_name, "pandis_thresholds"],
+                                ["diagnosed_disease_cohort", focusdisease_cohort_name, "nof1_disease_thresholds"],
                                 ["pandisease_samples",
                                     "Diseases of Top Six Most Correlated Samples above&nbsp;Threshold",
-                                    "nof1_disease_thresholds"]] %}
+                                    "pandis_thresholds"]] %}
                         
             {%- for (cohort_id, cohort_name, cohort_thresholds) in which_cohorts -%}
                 <div class="ui attached small segment" style="display:flex;">
@@ -795,29 +801,28 @@
                 </div></div>
             {% endfor %}
 
-            <!-- report fraction of disease cohort that are ALSO most correlated samples -->
+            <!-- report fraction of disease cohort (other than focus) that are ALSO most correlated samples -->
             <div class="ui message"  style="margin-top:0px;">
                 {%- if conf.info.disease -%}
-                    {%- set total_disease = nb_2pt2.count_of_samples_same_disease | int -%}
+                    {%- set total_disease = nb_2pt2.count_of_samples_same_disease | int - 1 -%}
                     {%- if conf.info.disease in nb_2pt2.personalized_cohort_counts.first_degree_mcs_cohort.diseases -%}
                         {%- set firdeg_disease =
-                            nb_2pt2.personalized_cohort_counts.first_degree_mcs_cohort.diseases[conf.info.disease] | int -%}
+                            nb_2pt2.personalized_cohort_counts.first_degree_mcs_cohort.diseases[conf.info.disease] -%}
                     {%- else -%}{%- set firdeg_disease = 0 -%}{%- endif -%}
                 
                     {%- if conf.info.disease in
                         nb_2pt2.personalized_cohort_counts.first_and_second_degree_mcs_cohort.diseases -%}
                         {%- set firsecdeg_disease = 
                             nb_2pt2.personalized_cohort_counts.first_and_second_degree_mcs_cohort.diseases[
-                            conf.info.disease] | int -%}
+                            conf.info.disease] -%}
                     {%- else -%}{%- set firsecdeg_disease = 0 -%}{%- endif -%}
                     
                     This sample has a diagnosis of <b>{{conf.info.disease}}</b>.
-                    {%- if total_disease == 0 %}
-                        There are no samples in the compendium with this diagnosis.
+                    {%- if total_disease <= 0 %}
+                        There are no other samples in the compendium with this diagnosis.
                     {%- else %}
-                        Of the {{total_disease}} {{conf.info.disease}} samples in the compendium, {{firdeg_disease}}
-                        ({{ (100 * firdeg_disease / total_disease) | int }}%) were among the first degree MCS for this 
-                        focus sample, and {{firsecdeg_disease}} ({{ (100 * firsecdeg_disease / total_disease) | int }}%) 
+                        Of the {{total_disease}} other {{conf.info.disease}} samples in the compendium, {{ firdeg_disease }}
+                        were among the first degree MCS for this focus sample, and {{ firsecdeg_disease}} 
                         were among the first and second degree MCS for this sample.
                     {%- endif -%}
                 {%- else -%}
@@ -974,11 +979,10 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
             <!-- javascript populates analyst-specific references here -->
         </ul>
         </div>
-            
-            </td></tr></tbody>
-        </table> <!-- End main appendix table -->
+    </div><!-- end appendix part 1 container -->
     </div> <!-- End Page -->
-    <div class="page appendices noprint" style="height:auto;" > <!-- Page 3 : internal appendices -->
+    <div class="page appendices toggle-fullSummary" style="height:auto;">
+        <!-- Page 3 : internal appendices -->
         <h2>Treehouse internal appendix for Treehouse comparative RNA-Seq analysis report</h2>
         <h3>Case Documentation</h3>
         <div id="case_documentation">
@@ -1028,7 +1032,7 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
         <table class="ui basic collapsing celled padded table">
             <tr>
             {% for metric_name in qc_metric_names %}
-                <th>{{metric_name}}</th>
+                <th>{{metric_name | replace("_", " ")}}</th>
             {% endfor %}
             </tr>
         {% for metric in qc_metrics %}
@@ -1074,7 +1078,7 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
                             <b>Assay:  {{ assay }}</b>
                         </td>
                         <td colspan=2 style="padding-top:10px">
-                            {{nb_8.automated_leads_identified.results[lead_number] }}
+                            {{nb_8.automated_leads_identified.results[lead_number] | replace("_", " ") }}
                         </td>
                     </tr>
                     <tr>
@@ -1270,7 +1274,8 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
                  {%- for variant in nb_8pt5.variants -%}
                      <tr>
                          {%- for field in nb_8pt5.primary_fields -%}
-                             <!-- replacing | only applies to the "aa change" field but is safe in the other primary fields. -->
+                             {#- replacing | is only relevant to the "aa change" field
+                             but won't negatively affect the other primary fields. -#}
                              <td style="padding:3px;"><b>{{variant[field] | replace("|", "<br/>") | safe}}</b></td>
                          {%- endfor -%}
                          {%- for field in display_these_extra_fields -%}
@@ -1392,12 +1397,14 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
                                 {%- endfor -%}
                             </table>
                         {%- else -%}
-                            Isoform expression table not found for {{gene}}. Please check the isoform notebook for errors.<br/>
+                            Isoform expression table not found for {{gene}}. Please check the isoform notebook for errors.
+                            <br/>
                         {%- endif -%}
                         {%- if gene_items.expressed_isoforms_img_data -%}
                             <img style="width:100%;" src="data:img/png;base64, {{gene_items.expressed_isoforms_img_data}}">
                         {%- else -%}
-                            Expressed isoforms image not found for {{gene}}. Please check the isoform notebook for errors.<br/>
+                            Expressed isoforms image not found for {{gene}}. Please check the isoform notebook for errors.
+                            <br/>
                         {%- endif -%}
                         {%- if gene_items.transcript_biotypes_img_data -%}
                             <img style="width:60%;" src="data:img/png;base64, {{gene_items.transcript_biotypes_img_data}}">
@@ -1414,8 +1421,46 @@ Ribociclib is an orally available cyclin-dependent kinase (CDK) inhibitor target
             {%- endif -%}
             </div>
         </div><!-- end isoform report -->
+        <div class="module appendix"><!-- percentile ranking for drugs -->
+            <h4 class="ui top attached center aligned inverted header">All-Drug report</h4>
+            Expression of all drug targets identified as leads in the CKCC2 project.
+            {%- if nb_8pt75.drugs_by_percentile_plot -%}
+                <img style="width:100%;" src="{{nb_8pt75.drugs_by_percentile_plot}}">
+            {%- else -%}
+                No drug target plot was found for this sample.
+            {%- endif -%}
+            {%- if nb_8pt75.drug_relevant_expression_table -%}
+                {#- Alternate rows between default color and alt color based on drug name -#}
+                {%- set drug_table_striper = { "curr_drug":"", "using_alt_color":false } -%}
 
-    </div> <!-- End Page - treehouse internal appendix -->
+                <table class="ui attached celled table">
+                    <tr>
+                    {%- for key in nb_8pt75.expression_table_key_order -%}
+                        <th>{{key}}</th>
+                    {%- endfor -%}
+                    </tr>
+                    {% for gene in nb_8pt75.drug_relevant_expression_table %}
+                        {%- if gene["drug"] != drug_table_striper["curr_drug"] -%}
+                            {%- set _ = drug_table_striper.update({
+                                "curr_drug":gene["drug"],
+                                "using_alt_color": not drug_table_striper["using_alt_color"]}) -%}
+                        {%- endif -%}
+                        <tr {% if drug_table_striper["using_alt_color"]  %} style="background-color:#eeeeee" {%- endif -%}>
+                        {%- for key in nb_8pt75.expression_table_key_order -%}
+                        <td>{{gene[key]}}</td>
+                        {%- endfor -%}
+                        </tr>
+                    {% endfor %}
+                </table>
+            {%- else -%}
+                Drug-relevant expression table was missing or empty.
+            {%- endif -%}
+            </div><!-- end percentile ranking for drugs -->
+        </div> <!-- End Page - treehouse internal appendix -->
+
+    <!-- end Wrapper table - don't put visible content after here -->
+    </tr></td>
+    </table>
     <!-- placeholder ids -->
     <div style="display:none;">
         <span id="hideable_items"></span>

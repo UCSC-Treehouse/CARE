@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ucsctreehouse/care:0.17.0.0
+ARG BASE_IMAGE=ucsctreehouse/care:0.17.1.0
 FROM $BASE_IMAGE
 
 # Add to Treehouse group so no need to run as user/group

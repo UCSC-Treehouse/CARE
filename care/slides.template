@@ -164,6 +164,11 @@
         <h4 class="ui top center aligned inverted header" style="margin-bottom:0in;">
             QC report for {{nb_4pt25.Sample_id}}
         </h4>
+        <script>
+            // these are needed for the RIN section of parseCustom in summary.template.js
+            let nb4pt25_RIN_Precise_result = "{{ nb_4pt25['RIN']['Precise_result'] }}";
+            let nb4pt25_RIN_Precise_reference_lower = "{{ nb_4pt25['RIN']['Precise_reference_lower'] }}";
+        </script>
         <div style="padding:5%">
         Treehouse QC Metrics <br/>
             {{nb_4pt25.Date}}<br/>
@@ -194,11 +199,12 @@
                         {%- set rowColoringFailOrNot = "" -%}
                         {%- set textColorFailOrNot = "" -%}
                     {%- endif %}
-                    <tr class="odd" style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
+                    <tr class="odd" id="rin_row_display"
+                        style="background-color:{{rowColoringFailOrNot}}; color: {{textColorFailOrNot}}";>
                             <td align="left">RIN</td>
-                            <td align="center">{{nb_4pt25['RIN']['Result']}}</td>
+                            <td align="center" id="rin_score_display">{{nb_4pt25['RIN']['Result']}}</td>
                             <td align="center">{{nb_4pt25['RIN']['Reference_range']}}</td>
-                            <td align="center">
+                            <td align="center" id="rin_passfail_display">
                                 {%- if passing -%}
                                     PASS
                                 {%- elif nb_4pt25['RIN']["In_reference_range?"]=="NA" -%}
@@ -482,10 +488,10 @@
                                 ["first_and_second_degree_mcs_cohort", 
                                     "First and Second-Degree MCS", 
                                     "first_and_second_degree_thresholds"],
-                                ["diagnosed_disease_cohort", focusdisease_cohort_name, "pandis_thresholds"],
+                                ["diagnosed_disease_cohort", focusdisease_cohort_name, "nof1_disease_thresholds"],
                                 ["pandisease_samples",
                                     "Diseases of Top Six MCS above&nbsp;Threshold",
-                                    "nof1_disease_thresholds"]] %}
+                                    "pandis_thresholds"]] %}
         <table class="ui very compact small table" id="tablePersonalizedCohortCounts"
                style="line-height:120%;margin:0in;font-size:{{size_for_diseases}}pt;">
             {%- for (cohort_id, cohort_name, cohort_thresholds) in which_cohorts -%}
@@ -500,12 +506,11 @@
                         </b><br/>
                          <div style="display:flex;justify-content:left;">
                     {% endif %}
-
                                         
-                    {% set total_diseases = nb_2pt2.personalized_cohort_counts[cohort_id]["diseases"].keys() | length %}
-                    {% set columncount = 2 %}
-                    {% set dis_per_column = (total_diseases / columncount) |round(0,"ceil")| int %}
-                    {% set diseasecount=[] %} <!-- Have to use array+length to increment counts within a loop. Ugh. -->
+                    {%- set total_diseases = nb_2pt2.personalized_cohort_counts[cohort_id]["diseases"].keys() | length -%}
+                    {%- set columncount = 2 -%}
+                    {%- set dis_per_column = (total_diseases / columncount) |round(0,"ceil")| int -%}
+                    {%- set diseasecount=[] -%} {# Use array length to track counts inside loop, ugh #}
                     
                     {%- if dis_per_column > 0 -%}
                     {%- for (disease, count) in nb_2pt2.personalized_cohort_counts[cohort_id]["diseases"]|
@@ -513,7 +518,11 @@
                         {# Hit a new column - create its div #}
                         {%- if (diseasecount | length ) % dis_per_column == 0 -%}<div style="padding-left:10%;">{%- endif -%}
                         {%- if diseasecount.append(0) -%}{%- endif -%} {# increment, ugh #}
-                            {{disease}}&nbsp;&mdash;&nbsp;{{count}}<br/>
+                            {%- if (disease | length ) -%}
+                                {{disease}}&nbsp;&mdash;&nbsp;{{count}}<br/>
+                            {%- else -%}
+                                (not provided)&nbsp;&mdash;&nbsp;{{count}}<br/>
+                            {%- endif -%}
                         {%- if (diseasecount | length ) % dis_per_column == 0 -%} {# Finished a column #}
                             </div>
                         {%- endif -%}
