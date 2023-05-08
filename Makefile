@@ -12,7 +12,7 @@ run:
 run-dev:
 	docker run \
 		--rm \
-		--user $$UID \
+		--user $(shell id -u) \
 		-v `pwd`/care:/app:ro \
 		-v `pwd`/:/work \
 		$(IMAGE) run
@@ -22,7 +22,7 @@ run-treehouse:
 	mkdir -p outputs
 	docker run \
 		--rm \
-		--user $$UID \
+		--user $(shell id -u) \
 		-v `pwd`:/work/rollup:ro \
 		-v `pwd`/manifest.tsv:/work/manifest.tsv:ro \
 		-v `pwd`/outputs:/work/outputs \
