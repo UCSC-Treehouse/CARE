@@ -63,3 +63,16 @@ Update the values in annotations.json, save it, and refresh the HTML file to see
 In addition, creating images with certain names will cause them to appear in predetermined locations in the Summary and Slides:
 - pathway.png : pathway diagram
 - tumormap.png : tumormap image
+
+## Data requirements
+If the RNA-Seq data does not contain enough informative reads, meaningful comparisons cannot be made with our compendium. We assess whether reads are informative by determining whether they are Mapped, Exonic, and Non-duplicate (MEND) reads. To determine whether an RNA-Seq dataset contains enough MEND reads, check the first page of Summary.html, which reports whether the sample passes or fails MEND QC, which requires 10 million MEND reads. 
+
+Following is an example of a dataset that failed MEND QC. The dataset contained 0.7 million MEND reads, and the QC tables on the first page of Summary.html reports "FAIL" for MEND QC. While that data had plenty of total reads (17 million), 81% are duplicates (page 25, "Metrics"). MEND reads are described [here](https://academic.oup.com/gigascience/article/10/3/giab011/6169410).
+
+The analysis reported no pan-disease outliers, but we would also recommend that one also be skeptical of the pan-cancer outlier results. Too few genes were measured due to the lack of informative reads. The low number of measured genes causes each gene's allotment of TPM (which we think of as slices of a pie: fewer slices = bigger slices) to be larger than in most samples. The Metrics section of Summary.html reported that 19.73 thousand genes were measured in the dataset, while the typical range is 24.76 - 29.7. The analysis returned 606 pan cancer up-outliers, while the typical range is 97.04 - 285.05. Together with the low MEND read count, these indicate that the pan-cancer results are a result of technical variation, not biological variation.
+
+The specific reason no pan-disease outliers were reported is that only one of the four personalized cohorts has any members. For example, in the "Diagnosis Composition of Personalized Cohorts" section, one row contains "First-Degree MCS" in the left column, and "Total —0 (Below minimum size; does not contribute to outlier analysis)" in the right column.
+
+CARE uses consensus based identification of pan-disease outliers, requiring that the gene is an outlier relative to at least 2 cohorts. That is why CARE reports no pan-disease results for the sample.
+
+The three cohorts with no samples are all based on correlation. In the "Most Correlated Samples with Clinical info" section, the highest correlation was 0.35. That is an exceptionally low correlation. We usually consider correlation scores in the top 5% of all correlation scores among all samples; the threshold for the top 5% for the v10 polyA compendium is 0.874. This is another indication that the RNA-Seq data for your sample is not comparable to the compendium.
